@@ -43,7 +43,7 @@ struct GameStartView: View {
                     Spacer()
                     
                     Button {
-                        if horseCount > 2 {
+                        if horseCount > GameConfig.minHorseCount {
                             changeButtonSound.playSound()
                             horseCount -= 1
                         } else {
@@ -68,7 +68,7 @@ struct GameStartView: View {
                         .padding(.top, 25)
                     
                     Button {
-                        if horseCount < 8 {
+                        if horseCount < GameConfig.maxHorseCount {
                             changeButtonSound.playSound()
                             horseCount += 1
                         } else {

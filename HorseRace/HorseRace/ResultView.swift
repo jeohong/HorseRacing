@@ -23,16 +23,9 @@ struct ResultView: View {
         self._mode = mode
         self._resultInfo = resultInfo
         self._horseNames = horseNames
-        if resultInfo.count == 2 || resultInfo.count == 4 {
-            self.rows = Array<GridItem>(repeating: GridItem(.flexible(), spacing: 8, alignment: .leading),
-                                        count: 2)
-        } else if resultInfo.count == 3 || resultInfo.count == 5 || resultInfo.count == 6 {
-            self.rows = Array<GridItem>(repeating: GridItem(.flexible(), spacing: 8, alignment: .leading),
-                                        count: 3)
-        } else {
-            self.rows = Array<GridItem>(repeating: GridItem(.flexible(), spacing: 8, alignment: .leading),
-                                        count: 4)
-        }
+        let rowCount = (resultInfo.count + 1) / 2
+        self.rows = Array<GridItem>(repeating: GridItem(.flexible(), spacing: 8, alignment: .leading),
+                                    count: rowCount)
         var info: [RankingInfo] = []
         for (i, value) in resultInfo.wrappedValue.enumerated() {
             info.append(RankingInfo(horseNum: i, second: Float(value) / 60.0))
@@ -50,52 +43,31 @@ struct ResultView: View {
     
     private func isUnderLineDisabled(_ num: Int) -> Bool {
         let num = num + 1
-        if rankingInfo.count < 4 {
-            return num == rankingInfo.count
-        } else if rankingInfo.count == 4 {
-            return num == 2 || num == 4
-        } else if rankingInfo.count == 5 {
-            return num == 3 || num == 5
-        } else if rankingInfo.count == 6 {
-            return num == 3 || num == 6
-        } else if rankingInfo.count == 7 {
-            return num == 4 || num == 7
+        let count = rankingInfo.count
+        if count < 4 {
+            return num == count
         } else {
-            return num == 4 || num == 8
+            let leftCount = (count + 1) / 2
+            return num == leftCount || num == count
         }
     }
     
     private func isDashboardDisabled(_ num: Int) -> Bool {
         let num = num + 1
-        if rankingInfo.count < 4 {
+        let count = rankingInfo.count
+        if count < 4 {
             return num == 1
-        } else if rankingInfo.count == 4 {
-            return num == 1 || num == 3
-        } else if rankingInfo.count == 5 || rankingInfo.count == 6 {
-            return num == 1 || num == 4
         } else {
-            return num == 1 || num == 5
+            let leftCount = (count + 1) / 2
+            return num == 1 || num == leftCount + 1
         }
     }
     
+    private static let numberWords = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
+
     private func numString(_ num: Int) -> String {
-        if num == 1 {
-            return "one"
-        } else if num == 2 {
-            return "two"
-        } else if num == 3 {
-            return "three"
-        } else if num == 4 {
-            return "four"
-        } else if num == 5 {
-            return "five"
-        } else if num == 6 {
-            return "six"
-        } else if num == 7 {
-            return "seven"
-        } else {
-            return "eight"
-        }
+        guard num >= 1, num <= Self.numberWords.count else { return "one" }
+        return Self.numberWords[num - 1]
     }
     
     @State private var gridWidth: CGFloat = 0
@@ -239,89 +211,35 @@ struct ResultView: View {
             self.rankingInfo = rankingInfo
         }
         
+        private var leftCount: Int { (num + 1) / 2 }
+        private var rightCount: Int { num - leftCount }
+        private var needsPlaceholder: Bool { num >= 4 && rightCount < leftCount }
+
         var body: some View {
-            if num == 2 {
+            if num < 4 {
                 VStack(spacing: 15) {
                     ForEach(0..<num, id: \.self) { i in
                         content(i, rankingInfo[i].horseNum, rankingInfo[i].second)
                     }
                 }
-            } else if num == 3 {
-                VStack(spacing: 15) {
-                    ForEach(0..<3, id: \.self) { i in
-                        content(i, rankingInfo[i].horseNum, rankingInfo[i].second)
-                    }
-                }
-            } else if num == 4 {
+            } else {
                 HStack(alignment: .top, spacing: 20) {
-                    VStack(spacing: 15) {
-                        ForEach(0..<2, id: \.self) { i in
+                    VStack(spacing: num == 4 ? 15 : 8) {
+                        ForEach(0..<leftCount, id: \.self) { i in
                             content(i, rankingInfo[i].horseNum, rankingInfo[i].second)
                         }
                     }
-                    VStack(spacing: 15) {
-                        ForEach(2..<4, id: \.self) { i in
+                    VStack(spacing: num == 4 ? 15 : 8) {
+                        ForEach(leftCount..<num, id: \.self) { i in
                             content(i, rankingInfo[i].horseNum, rankingInfo[i].second)
                         }
-                    }
-                }
-                .padding([.bottom, .vertical], 16)
-            } else if num == 5 {
-                HStack(alignment: .top, spacing: 20) {
-                    VStack(spacing: 8) {
-                        ForEach(0..<3, id: \.self) { i in
-                            content(i, rankingInfo[i].horseNum, rankingInfo[i].second)
-                        }
-                    }
-                    VStack(spacing: 8) {
-                        ForEach(3..<5, id: \.self) { i in
-                            content(i, rankingInfo[i].horseNum, rankingInfo[i].second)
-                        }
-                        content(0, rankingInfo[0].horseNum, rankingInfo[0].second)
-                            .opacity(0)
-                    }
-                }
-            } else if num == 6 {
-                HStack(alignment: .top, spacing: 20) {
-                    VStack(spacing: 8) {
-                        ForEach(0..<3, id: \.self) { i in
-                            content(i, rankingInfo[i].horseNum, rankingInfo[i].second)
-                        }
-                    }
-                    VStack(spacing: 8) {
-                        ForEach(3..<6, id: \.self) { i in
-                            content(i, rankingInfo[i].horseNum, rankingInfo[i].second)
+                        if needsPlaceholder {
+                            content(0, rankingInfo[0].horseNum, rankingInfo[0].second)
+                                .opacity(0)
                         }
                     }
                 }
-            } else if num == 7 {
-                HStack(alignment: .top, spacing: 20) {
-                    VStack(spacing: 8) {
-                        ForEach(0..<4, id: \.self) { i in
-                            content(i, rankingInfo[i].horseNum, rankingInfo[i].second)
-                        }
-                    }
-                    VStack(spacing: 8) {
-                        ForEach(4..<7, id: \.self) { i in
-                            content(i, rankingInfo[i].horseNum, rankingInfo[i].second)
-                        }
-                        content(0, rankingInfo[0].horseNum, rankingInfo[0].second)
-                            .opacity(0)
-                    }
-                }
-            } else if num == 8 {
-                HStack(alignment: .top, spacing: 20) {
-                    VStack(spacing: 8) {
-                        ForEach(0..<4, id: \.self) { i in
-                            content(i, rankingInfo[i].horseNum, rankingInfo[i].second)
-                        }
-                    }
-                    VStack(spacing: 8) {
-                        ForEach(4..<8, id: \.self) { i in
-                            content(i, rankingInfo[i].horseNum, rankingInfo[i].second)
-                        }
-                    }
-                }
+                .padding(num == 4 ? [.bottom, .vertical] : [], num == 4 ? 16 : 0)
             }
         }
     }

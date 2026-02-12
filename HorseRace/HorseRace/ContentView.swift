@@ -1,10 +1,15 @@
 import SwiftUI
 
+enum GameConfig {
+    static let maxHorseCount = 9
+    static let minHorseCount = 2
+}
+
 struct ContentView: View {
     @State var mode: Mode = .GameStart
-    @State var horseCount: Int = 2
+    @State var horseCount: Int = GameConfig.minHorseCount
     @State var resultInfo: [Int] = []
-    @State var horseNames = ["", "", "", "", "", "", "", ""]
+    @State var horseNames = Array(repeating: "", count: GameConfig.maxHorseCount)
     
     let BGM = SoundSetting(forResouce: "MA_JingleRepublic_TrendyJumpingYouth_Main", withExtension: "wav")
     
