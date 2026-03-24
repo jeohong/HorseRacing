@@ -1,14 +1,14 @@
 import SwiftUI
 
 enum GameConfig {
-    static let maxHorseCount = 9
+    static let maxHorseCount = 8
     static let minHorseCount = 2
 }
 
 struct ContentView: View {
     @State var mode: Mode = .GameStart
     @State var horseCount: Int = GameConfig.minHorseCount
-    @State var resultInfo: [Int] = []
+    @State var resultInfo: [Double] = []
     @State var horseNames = Array(repeating: "", count: GameConfig.maxHorseCount)
     
     let BGM = SoundSetting(forResouce: "MA_JingleRepublic_TrendyJumpingYouth_Main", withExtension: "wav")
@@ -40,7 +40,7 @@ struct ContentView: View {
     private func setNewSpeed() {
         resultInfo = []
         for _ in 1...horseCount {
-            resultInfo.append((60...120).randomElement() ?? 60 )
+            resultInfo.append(Double.random(in: 60.0...120.0))
         }
     }
 }

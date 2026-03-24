@@ -12,14 +12,14 @@ struct ResultView: View {
     let restartButtonSound = SoundSetting(forResouce: "startButtonSound", withExtension: "wav")
     
     @Binding var mode: Mode
-    @Binding var resultInfo: [Int]
+    @Binding var resultInfo: [Double]
     @Binding var horseNames: [String]
     
-    typealias RankingInfo = (horseNum: Int, second: Float)
+    typealias RankingInfo = (horseNum: Int, second: Double)
     @State private var capsuleWidth: CGFloat = .zero
     @State private var circleWidth: CGFloat = .zero
     
-    init(mode: Binding<Mode>, resultInfo: Binding<[Int]>, horseNames: Binding<[String]>) {
+    init(mode: Binding<Mode>, resultInfo: Binding<[Double]>, horseNames: Binding<[String]>) {
         self._mode = mode
         self._resultInfo = resultInfo
         self._horseNames = horseNames
@@ -28,13 +28,28 @@ struct ResultView: View {
                                     count: rowCount)
         var info: [RankingInfo] = []
         for (i, value) in resultInfo.wrappedValue.enumerated() {
-            info.append(RankingInfo(horseNum: i, second: Float(value) / 60.0))
+            info.append(RankingInfo(horseNum: i, second: value / 60.0))
         }
-        
-        self.rankingInfo = info.sorted { $0.second < $1.second }
+
+        let sorted = info.sorted { $0.second < $1.second }
+        self.rankingInfo = sorted
+
+        // ms 단위까지 동일하게 표시되는 쌍 찾기
+        var duplicates: Set<Int> = []
+        for i in 0..<sorted.count {
+            for j in (i+1)..<sorted.count {
+                if ResultView.formatTime(sorted[i].second, precise: false)
+                    == ResultView.formatTime(sorted[j].second, precise: false) {
+                    duplicates.insert(i)
+                    duplicates.insert(j)
+                }
+            }
+        }
+        self.preciseIndices = duplicates
     }
     
     private let rankingInfo: [RankingInfo]
+    private let preciseIndices: Set<Int>
     private var rows: [GridItem]
     
     private var columnCount: Int {
@@ -125,33 +140,34 @@ struct ResultView: View {
                                 .onPreferenceChange(SizePreferenceKey.self) { size in
                                     circleWidth = size.width
                                 }
-                            
+
                             HStack(spacing: 0) {
                                 Image("horse\(num+1)\(rankingInfo.count < 4 ? "byOne" : "byTwo")")
                                     .resizable()
                                     .scaledToFit()
                                     .clipShape(Capsule())
-                                
+
                                 Spacer()
-                                
+
                                 HStack(spacing: 0) {
                                     Text(horseNames[num] == "" ? "\(num + 1)번마" : "\(horseNames[num])")
                                         .bold()
                                         .lineLimit(1)
                                         .minimumScaleFactor(0.6)
                                         .foregroundColor(Color(hex: "481B15"))
-                                    
+
                                     Spacer()
-                                    
-                                    Text(getTimeLiteral(second))
-                                        .font(.subheadline)
+
+                                    Text(ResultView.formatTime(second, precise: preciseIndices.contains(ranking)))
+                                        .font(preciseIndices.contains(ranking) ? .caption : .subheadline)
                                         .bold()
                                         .multilineTextAlignment(.leading)
                                         .lineLimit(1)
+                                        .minimumScaleFactor(0.8)
                                         .foregroundColor(Color(hex: "481B15"))
                                         .padding(.trailing, 30)
                                         .frame(width: 100)
-                                    
+
                                 }
                             }
                             .frame(minWidth: 180, maxWidth: 280, maxHeight: 65)
@@ -192,20 +208,25 @@ struct ResultView: View {
         .ignoresSafeArea()
     }
     
-    private func getTimeLiteral(_ second: Float) -> String {
+    private static func formatTime(_ second: Double, precise: Bool) -> String {
         let value = second + 10
-        let second = Int(value)
-        let millisecond = value - Float(second)
-        return String(second) + "s " + String(format: "%.2f", millisecond).dropFirst(2) + "ms"
+        let sec = Int(value)
+        let millisecond = value - Double(sec)
+        if precise {
+            let raw = String(format: "%.3f", millisecond).dropFirst(2)
+            return String(sec) + "s " + String(raw) + "ms"
+        } else {
+            return String(sec) + "s " + String(format: "%.2f", millisecond).dropFirst(2) + "ms"
+        }
     }
     
     struct RankingGridView<ItemView: View>: View {
         
         var num: Int
         var rankingInfo: [RankingInfo]
-        let content: (Int, Int, Float) -> ItemView
-        
-        init(num: Int, rankingInfo: [RankingInfo], @ViewBuilder content: @escaping (Int, Int, Float) -> ItemView) {
+        let content: (Int, Int, Double) -> ItemView
+
+        init(num: Int, rankingInfo: [RankingInfo], @ViewBuilder content: @escaping (Int, Int, Double) -> ItemView) {
             self.num = num
             self.content = content
             self.rankingInfo = rankingInfo
