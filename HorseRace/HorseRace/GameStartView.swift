@@ -17,6 +17,7 @@ struct GameStartView: View {
     let negativeSound = SoundSetting(forResouce: "negativeSound", withExtension: "wav")
     
     @State private var showCreditView = false
+    @FocusState private var focusedHorse: Int?
     
     var body: some View {
         ZStack {
@@ -102,7 +103,8 @@ struct GameStartView: View {
                                 .scaledToFit()
                             
                             TextField("", text: $horseNames[num - 1])
-                                .placeholder(when: horseNames[num - 1].isEmpty) {
+                                .focused($focusedHorse, equals: num)
+                                .placeholder(when: horseNames[num - 1].isEmpty && focusedHorse != num) {
                                     Text("\(num)번마")
                                         .foregroundColor(.white)
                                 }
