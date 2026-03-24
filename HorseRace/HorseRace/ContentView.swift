@@ -1,7 +1,7 @@
 import SwiftUI
 
 enum GameConfig {
-    static let maxHorseCount = 8
+    static let maxHorseCount = 10
     static let minHorseCount = 2
 }
 
