@@ -19,7 +19,7 @@ struct GameProcessingView: View {
     init(game: GameState) {
         self.game = game
         // 말 마리수 반영해서 Scene 생성
-        _scene = StateObject(wrappedValue: HorseRunningScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), horseCount: game.horseCount))
+        _scene = StateObject(wrappedValue: HorseRunningScene(size: UIScreen.current.bounds.size, horseCount: game.horseCount))
     }
     
     var body: some View {
@@ -126,7 +126,7 @@ class HorseRunningScene: SKScene, ObservableObject {
         
         // 다리 애니메이션은 출발(3초) 직후부터
         for i in 1...horseCount {
-            let horseNode = HorseNode.make(number: i, horseCount: horseCount, x: frame.minX + horseStartX, runDelay: 3.1)
+            let horseNode = HorseNode.make(number: i, horseCount: horseCount, sceneHeight: size.height, x: frame.minX + horseStartX, runDelay: 3.1)
             horseArray.append(horseNode)
             addChild(horseNode)
         }
@@ -153,7 +153,7 @@ class HorseRunningScene: SKScene, ObservableObject {
             backgroundStart.position.x -= backgroundSpeed
             backgroundMiddle.position.x -= backgroundSpeed
             
-            if backgroundMiddle.position.x + backgroundMiddle.size.width < UIScreen.main.bounds.size.width {
+            if backgroundMiddle.position.x + backgroundMiddle.size.width < size.width {
                 // backgroundStart 뒷부분 다시 활용
                 backgroundStart.position.x = backgroundMiddle.position.x
                 backgroundMiddle.position.x += backgroundMiddle.size.width

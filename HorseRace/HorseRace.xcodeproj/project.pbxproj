@@ -20,6 +20,7 @@
 		3296D0C62892BDE4001C1847 /* HorseRaceUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3296D0C52892BDE4001C1847 /* HorseRaceUITestsLaunchTests.swift */; };
 		32AD9CC42951C2690042D445 /* Extension+KeyBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AD9CC32951C2690042D445 /* Extension+KeyBoard.swift */; };
 		4E2A9C222F0A1B0000D3A001 /* Extension+Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2A9C212F0A1B0000D3A001 /* Extension+Task.swift */; };
+		4E2A9C262F0A1B0000D3A001 /* Extension+UIScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2A9C252F0A1B0000D3A001 /* Extension+UIScreen.swift */; };
 		4E2A9C242F0A1B0000D3A001 /* HorseNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2A9C232F0A1B0000D3A001 /* HorseNode.swift */; };
 		32E19A3828D31E70007EF964 /* startButtonSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 32E19A3528D31E70007EF964 /* startButtonSound.wav */; };
 		32E19A3928D31E70007EF964 /* negativeSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 32E19A3628D31E70007EF964 /* negativeSound.wav */; };
@@ -79,6 +80,7 @@
 		3296D0C52892BDE4001C1847 /* HorseRaceUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorseRaceUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		32AD9CC32951C2690042D445 /* Extension+KeyBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+KeyBoard.swift"; sourceTree = "<group>"; };
 		4E2A9C212F0A1B0000D3A001 /* Extension+Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Task.swift"; sourceTree = "<group>"; };
+		4E2A9C252F0A1B0000D3A001 /* Extension+UIScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIScreen.swift"; sourceTree = "<group>"; };
 		4E2A9C232F0A1B0000D3A001 /* HorseNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorseNode.swift; sourceTree = "<group>"; };
 		32E19A3528D31E70007EF964 /* startButtonSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = startButtonSound.wav; sourceTree = "<group>"; };
 		32E19A3628D31E70007EF964 /* negativeSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = negativeSound.wav; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 				A3E0FD4128D5AC3800E48092 /* Launch Screen.storyboard */,
 				32AD9CC32951C2690042D445 /* Extension+KeyBoard.swift */,
 				4E2A9C212F0A1B0000D3A001 /* Extension+Task.swift */,
+				4E2A9C252F0A1B0000D3A001 /* Extension+UIScreen.swift */,
 				4E2A9C232F0A1B0000D3A001 /* HorseNode.swift */,
 			);
 			path = HorseRace;
@@ -373,6 +376,7 @@
 				CC2F8D6428D34557003C8F3F /* EndParticles.swift in Sources */,
 				32AD9CC42951C2690042D445 /* Extension+KeyBoard.swift in Sources */,
 				4E2A9C222F0A1B0000D3A001 /* Extension+Task.swift in Sources */,
+				4E2A9C262F0A1B0000D3A001 /* Extension+UIScreen.swift in Sources */,
 				4E2A9C242F0A1B0000D3A001 /* HorseNode.swift in Sources */,
 				3284738A28B4C15100BF498D /* FinalGameProcessingView.swift in Sources */,
 				A39FCEAD28C5ECE30078E19F /* GameStartView.swift in Sources */,

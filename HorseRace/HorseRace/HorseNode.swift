@@ -6,7 +6,6 @@
 //
 
 import SpriteKit
-import UIKit
 
 // 1라운드, 최종 라운드 Scene이 공통으로 쓰는 말 노드 생성
 enum HorseNode {
@@ -16,16 +15,17 @@ enum HorseNode {
     /// - Parameters:
     ///   - number: 말 번호 (1부터 시작)
     ///   - horseCount: 전체 말 수 (세로 위치 계산용)
+    ///   - sceneHeight: Scene 높이 (세로 위치 계산용)
     ///   - x: 시작 x 위치
     ///   - runDelay: 다리 애니메이션 시작 전 대기 시간
-    static func make(number: Int, horseCount: Int, x: CGFloat, runDelay: TimeInterval = 0) -> SKSpriteNode {
+    static func make(number: Int, horseCount: Int, sceneHeight: CGFloat, x: CGFloat, runDelay: TimeInterval = 0) -> SKSpriteNode {
         let atlas = SKTextureAtlas(named: "horse\(number)Images")
         let runFrames = (1...atlas.textureNames.count).map {
             atlas.textureNamed("horse\(number)-\($0)")
         }
 
         let horseNode = SKSpriteNode(texture: runFrames[Int.random(in: 3...5)])
-        horseNode.position = CGPoint(x: x, y: UIScreen.main.bounds.height / CGFloat(horseCount + 3) * CGFloat(number))
+        horseNode.position = CGPoint(x: x, y: sceneHeight / CGFloat(horseCount + 3) * CGFloat(number))
         horseNode.zPosition = -CGFloat(number)  // 위에 있는 말이 뒤로 가도록 zPosition 지정 필요
         horseNode.size = size
 

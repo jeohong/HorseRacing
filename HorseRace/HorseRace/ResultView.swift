@@ -15,7 +15,7 @@ struct ResultView: View {
     @State private var capsuleWidth: CGFloat = .zero
     @State private var circleWidth: CGFloat = .zero
     // 화면이 다시 그려져도 Scene은 처음 한 번만 생성
-    @StateObject private var particleScene = EndParticlesScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height))
+    @StateObject private var particleScene = EndParticlesScene(size: UIScreen.current.bounds.size)
     
     init(game: GameState) {
         self.game = game

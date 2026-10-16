@@ -19,7 +19,7 @@ struct GameStartView: View {
             Image("startBgImg")
                 .resizable()
                 .ignoresSafeArea()
-                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 20)
+                .frame(width: UIScreen.current.bounds.width, height: UIScreen.current.bounds.height + 20)
                 .scaledToFill().clipped()
             
             VStack {

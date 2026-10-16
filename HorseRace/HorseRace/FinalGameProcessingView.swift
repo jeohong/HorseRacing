@@ -15,7 +15,7 @@ struct FinalGameProcessingView: View {
     
     init(game: GameState) {
         self.game = game
-        _scene = StateObject(wrappedValue: FinalHorseRunningScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), horseCount: game.horseCount, randomSecond: game.resultInfo))
+        _scene = StateObject(wrappedValue: FinalHorseRunningScene(size: UIScreen.current.bounds.size, horseCount: game.horseCount, randomSecond: game.resultInfo))
     }
     
     var body: some View {
@@ -57,13 +57,12 @@ class FinalHorseRunningScene: SKScene, ObservableObject {
     override func didMove(to view: SKView) {
         // 배경 크기 조절
         backgroundFinish.anchorPoint = CGPoint.zero
-        backgroundFinish.size.width = UIScreen.main.bounds.size.width
-        backgroundFinish.size.height = UIScreen.main.bounds.size.height
+        backgroundFinish.size = size
         backgroundFinish.zPosition = -10
         addChild(backgroundFinish)
         
         for i in 1...horseCount {
-            let horseNode = HorseNode.make(number: i, horseCount: horseCount, x: frame.minX - 10)
+            let horseNode = HorseNode.make(number: i, horseCount: horseCount, sceneHeight: size.height, x: frame.minX - 10)
             horseArray.append(horseNode)
             addChild(horseNode)
         }
@@ -77,7 +76,7 @@ class FinalHorseRunningScene: SKScene, ObservableObject {
         
         // 60에서 180사이
         for (i, horse) in horseArray.enumerated() {
-            horse.position.x += CGFloat(UIScreen.main.bounds.size.width / CGFloat(randomSecond[i])) * frameScale
+            horse.position.x += CGFloat(size.width / CGFloat(randomSecond[i])) * frameScale
         }
     }
 }
