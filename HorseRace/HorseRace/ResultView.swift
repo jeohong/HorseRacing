@@ -22,10 +22,13 @@ struct ResultView: View {
         let entries = RaceRanking.entries(from: game.resultInfo)
         self.rankingInfo = entries
         self.preciseIndices = RaceRanking.preciseIndices(of: entries)
+        self.penaltyIndex = game.hasPenalty ? game.penaltyTarget.rankIndex(horseCount: entries.count) : nil
     }
     
     private let rankingInfo: [RankingInfo]
     private let preciseIndices: Set<Int>
+    // 벌칙을 받는 순위 인덱스 (벌칙이 없으면 nil)
+    private let penaltyIndex: Int?
     
     private var columnCount: Int {
         (rankingInfo.count < 4) ? 1 : 2
@@ -44,6 +47,26 @@ struct ResultView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 148)
+                    // 벌칙 문구는 제목 오른쪽 빈 공간에 (세로 공간을 쓰지 않도록)
+                    .frame(maxWidth: .infinity)
+                    .overlay {
+                        if let penaltyIndex = penaltyIndex {
+                            HStack(spacing: 0) {
+                                Spacer()
+                                    .frame(maxWidth: .infinity)
+                                Color.clear
+                                    .frame(width: 148)
+                                Text("벌칙: \(game.penalty)\n→ \(game.displayName(of: rankingInfo[penaltyIndex].horseNum))")
+                                    .font(.subheadline.bold())
+                                    .multilineTextAlignment(.trailing)
+                                    .lineLimit(2)
+                                    .minimumScaleFactor(0.6)
+                                    .foregroundColor(Color("penaltyColor"))
+                                    .frame(maxWidth: .infinity, alignment: .trailing)
+                            }
+                        }
+                    }
+                
                 VStack(spacing: 15) {
                     HStack(spacing: 20) {
                         ForEach(0..<columnCount, id: \.self) { _ in
@@ -122,6 +145,12 @@ struct ResultView: View {
                                     .onPreferenceChange(SizePreferenceKey.self) { size in
                                         capsuleWidth = size.width
                                     }
+                            )
+                            // 벌칙 받는 말 강조
+                            .overlay(
+                                Capsule()
+                                    .stroke(Color("penaltyColor"), lineWidth: 3)
+                                    .opacity(ranking == penaltyIndex ? 1 : 0)
                             )
                         }
                     }

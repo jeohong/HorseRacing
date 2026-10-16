@@ -13,6 +13,8 @@ struct GameStartView: View {
     @State private var showCreditView = false
     @State private var isStarting = false
     @FocusState private var focusedHorse: Int?
+    @FocusState private var isPenaltyFocused: Bool
+    @State private var keyboardHeight: CGFloat = 0
     
     var body: some View {
         ZStack {
@@ -112,23 +114,34 @@ struct GameStartView: View {
                     .font(.system(size: 20, weight: .heavy))
                     .foregroundColor(Color("startBtnColor"))
                 
-                Button {
-                    SoundSetting.shared.play(.startButton)
-                    isStarting = true
-                } label: {
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(width: 92, height: 37, alignment: .center)
-                        .foregroundColor(Color("startBtnColor"))
-                        .overlay(
-                            Text("시작하기")
-                                .foregroundColor(.white)
-                                .font(.system(size: 16, weight: .heavy))
-                        )
-                        .padding()
+                HStack(spacing: 0) {
+                    penaltyInput
+                    
+                    Button {
+                        SoundSetting.shared.play(.startButton)
+                        isStarting = true
+                    } label: {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: 92, height: 37, alignment: .center)
+                            .foregroundColor(Color("startBtnColor"))
+                            .overlay(
+                                Text("시작하기")
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 16, weight: .heavy))
+                            )
+                            .padding()
+                    }
+                    // 연타로 경주가 여러 번 시작되지 않도록
+                    .disabled(isStarting)
                 }
-                // 연타로 경주가 여러 번 시작되지 않도록
-                .disabled(isStarting)
             }
+            // 벌칙 입력칸은 화면 아래쪽이라 입력 중에는 키보드 높이만큼 올림
+            .offset(y: isPenaltyFocused ? -keyboardHeight : 0)
+            .animation(.easeOut(duration: 0.25), value: isPenaltyFocused)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillChangeFrameNotification)) { notification in
+            guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+            keyboardHeight = max(0, UIScreen.current.bounds.height - frame.minY)
         }
         // 버튼 효과음 후 0.5초 뒤 시작, 화면이 사라지면 자동으로 취소됨
         .task(id: isStarting) {
@@ -140,6 +153,47 @@ struct GameStartView: View {
         }
         .onTapGesture {
             self.endTextEditing()
+        }
+    }
+    
+    // 벌칙 대상(꼴등/1등) 선택 + 벌칙 입력
+    private var penaltyInput: some View {
+        HStack(spacing: 8) {
+            Text("벌칙")
+                .font(.system(size: 16, weight: .heavy))
+                .foregroundColor(Color("startBtnColor"))
+            
+            ForEach(PenaltyTarget.allCases, id: \.self) { target in
+                let isSelected = game.penaltyTarget == target
+                Button {
+                    SoundSetting.shared.play(.change)
+                    game.penaltyTarget = target
+                } label: {
+                    Text(target.title)
+                        .font(.system(size: 14, weight: .heavy))
+                        .foregroundColor(isSelected ? .white : Color("startBtnColor"))
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 6)
+                        .background(
+                            Capsule()
+                                .fill(isSelected ? Color("startBtnColor") : Color.white)
+                        )
+                }
+            }
+            
+            TextField("", text: $game.penalty)
+                .focused($isPenaltyFocused)
+                .placeholder(when: game.penalty.isEmpty, alignment: .leading) {
+                    Text("예) 커피 쏘기")
+                        .foregroundColor(.gray)
+                }
+                .foregroundColor(Color("startBtnColor"))
+                .padding(.horizontal, 12)
+                .frame(width: 180, height: 37)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.white)
+                )
         }
     }
 }

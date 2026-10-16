@@ -176,4 +176,48 @@ final class GameStateTests: XCTestCase {
 
         XCTAssertEqual(game.horseNames[0], "번개")
     }
+    
+    // MARK: 벌칙
+    
+    func test_벌칙_기본값은_없음_꼴등() {
+        XCTAssertFalse(game.hasPenalty)
+        XCTAssertEqual(game.penaltyTarget, .last)
+    }
+    
+    func test_벌칙_공백만_입력하면_없는것으로_봄() {
+        game.penalty = "   "
+        
+        XCTAssertFalse(game.hasPenalty)
+    }
+    
+    func test_벌칙_최대_길이까지만_입력됨() {
+        game.penalty = String(repeating: "가", count: GameConfig.maxPenaltyLength + 5)
+        
+        XCTAssertEqual(game.penalty.count, GameConfig.maxPenaltyLength)
+    }
+    
+    func test_restart_벌칙은_유지() {
+        game.penalty = "커피 쏘기"
+        game.penaltyTarget = .first
+        game.startRace()
+        
+        game.restart()
+        
+        XCTAssertEqual(game.penalty, "커피 쏘기")
+        XCTAssertEqual(game.penaltyTarget, .first)
+    }
+}
+
+// MARK: - PenaltyTarget
+
+final class PenaltyTargetTests: XCTestCase {
+    
+    func test_rankIndex_꼴등은_마지막_순위() {
+        XCTAssertEqual(PenaltyTarget.last.rankIndex(horseCount: 10), 9)
+        XCTAssertEqual(PenaltyTarget.last.rankIndex(horseCount: 2), 1)
+    }
+    
+    func test_rankIndex_1등은_첫번째_순위() {
+        XCTAssertEqual(PenaltyTarget.first.rankIndex(horseCount: 10), 0)
+    }
 }

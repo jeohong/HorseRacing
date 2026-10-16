@@ -10,6 +10,28 @@ import SwiftUI
 enum GameConfig {
     static let maxHorseCount = 10
     static let minHorseCount = 2
+    static let maxPenaltyLength = 20
+}
+
+// 벌칙을 받는 등수
+enum PenaltyTarget: CaseIterable {
+    case last
+    case first
+    
+    var title: String {
+        switch self {
+        case .last: return "꼴등"
+        case .first: return "1등"
+        }
+    }
+    
+    /// 순위표(빠른 순 정렬)에서 벌칙 대상의 인덱스
+    func rankIndex(horseCount: Int) -> Int {
+        switch self {
+        case .last: return horseCount - 1
+        case .first: return 0
+        }
+    }
 }
 
 enum Mode {
@@ -58,6 +80,20 @@ final class GameState: ObservableObject {
     @Published var horseNames = Array(repeating: "", count: GameConfig.maxHorseCount)
     // 말별 최종 라운드 기록 (값이 작을수록 빠름)
     @Published private(set) var resultInfo: [Double] = []
+    
+    @Published var penalty = "" {
+        didSet {
+            if penalty.count > GameConfig.maxPenaltyLength {
+                penalty = String(penalty.prefix(GameConfig.maxPenaltyLength))
+            }
+        }
+    }
+    @Published var penaltyTarget: PenaltyTarget = .last
+    
+    /// 벌칙이 입력되었는지 (공백만 있으면 없는 것으로 봄)
+    var hasPenalty: Bool {
+        !penalty.trimmingCharacters(in: .whitespaces).isEmpty
+    }
 
     /// 말 수를 늘리고 성공 여부를 반환
     func increaseHorseCount() -> Bool {
