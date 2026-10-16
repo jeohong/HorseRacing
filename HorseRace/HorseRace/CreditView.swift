@@ -16,7 +16,7 @@ struct CreditView: View {
     
     var body: some View {
         ZStack {
-            Color(hex: "EBDCCC")
+            Color("bgColor")
                 .ignoresSafeArea()
             
             VStack(spacing: 36) {
@@ -48,10 +48,10 @@ struct CreditView: View {
                             VStack(alignment: .trailing, spacing: 5) {
                                 Text(memberRole[i])
                                     .font(.subheadline.bold())
-                                    .foregroundColor(Color(hex: "D3B498"))
+                                    .foregroundColor(Color("subTextColor"))
                                 Text(memberKo[i])
                                     .font(.system(size: 24,weight: .heavy))
-                                    .foregroundColor(Color(hex: "481B15"))
+                                    .foregroundColor(Color("startBtnColor"))
                             }
                             .padding([.top, .trailing], 15)
                             Image("Horse\(member[i])")
