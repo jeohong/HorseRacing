@@ -10,15 +10,22 @@ import SpriteKit
 
 struct GameProcessingView: View {
     @ObservedObject var game: GameState
+    // 화면이 다시 그려져도 Scene은 처음 한 번만 생성
+    @StateObject private var scene: HorseRunningScene
     
     @State private var count = 3 // countDown 숫자
     @State private var animationAmount = -90.0
     
+    init(game: GameState) {
+        self.game = game
+        // 말 마리수 반영해서 Scene 생성
+        _scene = StateObject(wrappedValue: HorseRunningScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), horseCount: game.horseCount))
+    }
+    
     var body: some View {
         
         ZStack {
-            // 말 마리수 반영해서 Scene 생성
-            SpriteView(scene: HorseRunningScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), horseCount: game.horseCount))
+            SpriteView(scene: scene)
                 .ignoresSafeArea()
             
             if count > 0 {
@@ -78,7 +85,7 @@ struct GameProcessingView: View {
 
 
 // MARK: Horse Running Animation SpriteKit Scene
-class HorseRunningScene: SKScene {
+class HorseRunningScene: SKScene, ObservableObject {
     let backgroundStart = SKSpriteNode(imageNamed: "backgroundStart")
     let backgroundMiddle = SKSpriteNode(imageNamed: "backgroundMiddle")
     

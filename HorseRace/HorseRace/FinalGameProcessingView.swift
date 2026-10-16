@@ -10,10 +10,17 @@ import SpriteKit
 
 struct FinalGameProcessingView: View {
     @ObservedObject var game: GameState
+    // 화면이 다시 그려져도 Scene은 처음 한 번만 생성
+    @StateObject private var scene: FinalHorseRunningScene
+    
+    init(game: GameState) {
+        self.game = game
+        _scene = StateObject(wrappedValue: FinalHorseRunningScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), horseCount: game.horseCount, randomSecond: game.resultInfo))
+    }
     
     var body: some View {
         ZStack {
-            SpriteView(scene: FinalHorseRunningScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), horseCount: game.horseCount, randomSecond: game.resultInfo))
+            SpriteView(scene: scene)
                 .ignoresSafeArea()
         }
         .onAppear {
@@ -26,7 +33,7 @@ struct FinalGameProcessingView: View {
     }
 }
 
-class FinalHorseRunningScene: SKScene {
+class FinalHorseRunningScene: SKScene, ObservableObject {
     
     let backgroundFinish = SKSpriteNode(imageNamed: "backgroundFinish")
     private var horseArray: [SKSpriteNode?] = []

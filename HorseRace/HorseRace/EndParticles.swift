@@ -7,7 +7,7 @@
 import SwiftUI
 import SpriteKit
 
-class EndParticlesScene: SKScene {
+class EndParticlesScene: SKScene, ObservableObject {
     var emitter: SKEmitterNode!
     
     override func didMove(to view: SKView) {

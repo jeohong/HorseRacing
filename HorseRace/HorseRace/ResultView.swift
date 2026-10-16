@@ -14,6 +14,8 @@ struct ResultView: View {
     typealias RankingInfo = RaceRanking.Entry
     @State private var capsuleWidth: CGFloat = .zero
     @State private var circleWidth: CGFloat = .zero
+    // 화면이 다시 그려져도 Scene은 처음 한 번만 생성
+    @StateObject private var particleScene = EndParticlesScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height))
     
     init(game: GameState) {
         self.game = game
@@ -66,7 +68,7 @@ struct ResultView: View {
                 .ignoresSafeArea()
             
             // spriteKit view
-            SpriteView(scene: EndParticlesScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)), options: [.allowsTransparency])
+            SpriteView(scene: particleScene, options: [.allowsTransparency])
             
             VStack(spacing: 12) {
                 Image("Ranking")
