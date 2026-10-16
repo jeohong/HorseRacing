@@ -73,14 +73,21 @@ final class RaceRankingTests: XCTestCase {
 final class GameStateTests: XCTestCase {
 
     private var game: GameState!
+    private var recordStore: RaceRecordStore!
+    private let suiteName = "GameStateTests"
 
     override func setUp() {
         super.setUp()
-        game = GameState()
+        // 실제 경기 기록에 쓰이지 않도록 테스트 전용 저장소 사용
+        UserDefaults().removePersistentDomain(forName: suiteName)
+        recordStore = RaceRecordStore(defaults: UserDefaults(suiteName: suiteName)!)
+        game = GameState(recordStore: recordStore)
     }
 
     override func tearDown() {
         game = nil
+        recordStore = nil
+        UserDefaults().removePersistentDomain(forName: suiteName)
         super.tearDown()
     }
 
@@ -166,6 +173,46 @@ final class GameStateTests: XCTestCase {
 
         game.restart()
         XCTAssertEqual(game.mode, .gameStart)
+    }
+
+    // MARK: 경기 기록
+
+    func test_finishRace_경기_기록_저장() {
+        game.startRace()
+        game.finishFirstRound()
+        game.finishRace()
+
+        XCTAssertEqual(recordStore.records.count, 1)
+        XCTAssertEqual(recordStore.records[0].ranking.count, game.horseCount)
+    }
+
+    func test_makeRecord_빠른순_이름과_벌칙() {
+        game.horseNames[0] = "번개"
+        for _ in 0..<2 { _ = game.increaseHorseCount() }
+        game.penalty = "커피 쏘기"
+        game.penaltyTarget = .last
+        game.startRace()
+
+        let record = game.makeRecord()
+
+        XCTAssertEqual(record.ranking.map(\.second), record.ranking.map(\.second).sorted())
+        XCTAssertTrue(record.ranking.contains { $0.name == "번개" })
+        XCTAssertTrue(record.ranking.contains { $0.name == "2번마" })
+        XCTAssertEqual(record.penalty, "커피 쏘기")
+        XCTAssertEqual(record.penaltyRankIndex, 3)
+        XCTAssertEqual(record.penaltyName, record.ranking[3].name)
+        XCTAssertEqual(record.winnerName, record.ranking[0].name)
+    }
+
+    func test_makeRecord_벌칙이_없으면_nil() {
+        game.penalty = "   "
+        game.startRace()
+
+        let record = game.makeRecord()
+
+        XCTAssertNil(record.penalty)
+        XCTAssertNil(record.penaltyRankIndex)
+        XCTAssertNil(record.penaltyName)
     }
 
     func test_restart_입력한_이름은_유지() {
@@ -262,5 +309,69 @@ final class AppSettingTests: XCTestCase {
         
         XCTAssertTrue(Sound.bgm.isEnabled)
         XCTAssertFalse(Sound.horseGallop.isEnabled)
+    }
+}
+
+// MARK: - RaceRecordStore
+
+final class RaceRecordStoreTests: XCTestCase {
+
+    private let suiteName = "RaceRecordStoreTests"
+    private var defaults: UserDefaults!
+
+    override func setUp() {
+        super.setUp()
+        UserDefaults().removePersistentDomain(forName: suiteName)
+        defaults = UserDefaults(suiteName: suiteName)
+    }
+
+    override func tearDown() {
+        UserDefaults().removePersistentDomain(forName: suiteName)
+        defaults = nil
+        super.tearDown()
+    }
+
+    private func makeRecord(_ name: String) -> RaceRecord {
+        RaceRecord(date: Date(), ranking: [.init(name: name, second: 1.5)], penalty: nil, penaltyRankIndex: nil)
+    }
+
+    func test_add_최신_기록이_맨_앞() {
+        let store = RaceRecordStore(defaults: defaults)
+
+        store.add(makeRecord("첫번째"))
+        store.add(makeRecord("두번째"))
+
+        XCTAssertEqual(store.records.map(\.winnerName), ["두번째", "첫번째"])
+    }
+
+    func test_add_최대_개수를_넘으면_오래된_기록부터_삭제() {
+        let store = RaceRecordStore(defaults: defaults)
+
+        for i in 0..<(RaceRecordStore.maxCount + 3) {
+            store.add(makeRecord("\(i)"))
+        }
+
+        XCTAssertEqual(store.records.count, RaceRecordStore.maxCount)
+        XCTAssertEqual(store.records.first?.winnerName, "\(RaceRecordStore.maxCount + 2)")
+        XCTAssertEqual(store.records.last?.winnerName, "3")
+    }
+
+    func test_저장한_기록은_다시_불러와도_유지() {
+        let record = makeRecord("번개")
+        RaceRecordStore(defaults: defaults).add(record)
+
+        let reloaded = RaceRecordStore(defaults: defaults)
+
+        XCTAssertEqual(reloaded.records, [record])
+    }
+
+    func test_removeAll_기록_전체_삭제() {
+        let store = RaceRecordStore(defaults: defaults)
+        store.add(makeRecord("번개"))
+
+        store.removeAll()
+
+        XCTAssertTrue(store.records.isEmpty)
+        XCTAssertTrue(RaceRecordStore(defaults: defaults).records.isEmpty)
     }
 }

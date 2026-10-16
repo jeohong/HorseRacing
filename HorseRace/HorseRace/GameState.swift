@@ -90,6 +90,12 @@ final class GameState: ObservableObject {
     }
     @Published var penaltyTarget: PenaltyTarget = .last
     
+    private let recordStore: RaceRecordStore
+    
+    init(recordStore: RaceRecordStore = .shared) {
+        self.recordStore = recordStore
+    }
+    
     /// 벌칙이 입력되었는지 (공백만 있으면 없는 것으로 봄)
     var hasPenalty: Bool {
         !penalty.trimmingCharacters(in: .whitespaces).isEmpty
@@ -124,7 +130,19 @@ final class GameState: ObservableObject {
     }
 
     func finishRace() {
+        recordStore.add(makeRecord())
         mode = .rank
+    }
+    
+    /// 현재 경주 결과로 경기 기록 생성
+    func makeRecord(date: Date = Date()) -> RaceRecord {
+        let ranking = RaceRanking.entries(from: resultInfo)
+        return RaceRecord(
+            date: date,
+            ranking: ranking.map { RaceRecord.Entry(name: displayName(of: $0.horseNum), second: $0.second) },
+            penalty: hasPenalty ? penalty : nil,
+            penaltyRankIndex: hasPenalty ? penaltyTarget.rankIndex(horseCount: ranking.count) : nil
+        )
     }
 
     func restart() {

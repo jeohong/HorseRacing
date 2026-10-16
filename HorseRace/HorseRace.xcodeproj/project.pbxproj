@@ -24,6 +24,8 @@
 		4E2A9C242F0A1B0000D3A001 /* HorseNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2A9C232F0A1B0000D3A001 /* HorseNode.swift */; };
 		4E2A9C282F0A1B0000D3A001 /* Haptic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2A9C272F0A1B0000D3A001 /* Haptic.swift */; };
 		4E2A9C2A2F0A1B0000D3A001 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2A9C292F0A1B0000D3A001 /* SettingView.swift */; };
+		4E2A9C2E2F0A1B0000D3A001 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2A9C2D2F0A1B0000D3A001 /* HistoryView.swift */; };
+		4E2A9C2C2F0A1B0000D3A001 /* RaceRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2A9C2B2F0A1B0000D3A001 /* RaceRecord.swift */; };
 		32E19A3828D31E70007EF964 /* startButtonSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 32E19A3528D31E70007EF964 /* startButtonSound.wav */; };
 		32E19A3928D31E70007EF964 /* negativeSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 32E19A3628D31E70007EF964 /* negativeSound.wav */; };
 		32E19A3A28D31E70007EF964 /* changeSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 32E19A3728D31E70007EF964 /* changeSound.wav */; };
@@ -86,6 +88,8 @@
 		4E2A9C232F0A1B0000D3A001 /* HorseNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorseNode.swift; sourceTree = "<group>"; };
 		4E2A9C272F0A1B0000D3A001 /* Haptic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptic.swift; sourceTree = "<group>"; };
 		4E2A9C292F0A1B0000D3A001 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		4E2A9C2D2F0A1B0000D3A001 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		4E2A9C2B2F0A1B0000D3A001 /* RaceRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaceRecord.swift; sourceTree = "<group>"; };
 		32E19A3528D31E70007EF964 /* startButtonSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = startButtonSound.wav; sourceTree = "<group>"; };
 		32E19A3628D31E70007EF964 /* negativeSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = negativeSound.wav; sourceTree = "<group>"; };
 		32E19A3728D31E70007EF964 /* changeSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = changeSound.wav; sourceTree = "<group>"; };
@@ -179,6 +183,8 @@
 				4E2A9C232F0A1B0000D3A001 /* HorseNode.swift */,
 				4E2A9C272F0A1B0000D3A001 /* Haptic.swift */,
 				4E2A9C292F0A1B0000D3A001 /* SettingView.swift */,
+				4E2A9C2D2F0A1B0000D3A001 /* HistoryView.swift */,
+				4E2A9C2B2F0A1B0000D3A001 /* RaceRecord.swift */,
 			);
 			path = HorseRace;
 			sourceTree = "<group>";
@@ -386,6 +392,8 @@
 				4E2A9C242F0A1B0000D3A001 /* HorseNode.swift in Sources */,
 				4E2A9C282F0A1B0000D3A001 /* Haptic.swift in Sources */,
 				4E2A9C2A2F0A1B0000D3A001 /* SettingView.swift in Sources */,
+				4E2A9C2E2F0A1B0000D3A001 /* HistoryView.swift in Sources */,
+				4E2A9C2C2F0A1B0000D3A001 /* RaceRecord.swift in Sources */,
 				3284738A28B4C15100BF498D /* FinalGameProcessingView.swift in Sources */,
 				A39FCEAD28C5ECE30078E19F /* GameStartView.swift in Sources */,
 				CC585C6528D2C56C000DC4A7 /* SoundSetting.swift in Sources */,

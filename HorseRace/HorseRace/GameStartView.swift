@@ -12,6 +12,7 @@ struct GameStartView: View {
     
     @State private var showCreditView = false
     @State private var showSettingView = false
+    @State private var showHistoryView = false
     @State private var isStarting = false
     @FocusState private var focusedHorse: Int?
     @FocusState private var isPenaltyFocused: Bool
@@ -47,6 +48,20 @@ struct GameStartView: View {
                         Image(systemName: "gearshape.fill")
                             .font(.system(size: 26))
                             .foregroundColor(Color("startBtnColor"))
+                    }
+                    .padding([.vertical, .leading])
+                    
+                    Button {
+                        SoundSetting.shared.play(.change)
+                        Haptic.light.play()
+                        showHistoryView = true
+                    } label: {
+                        Image(systemName: "clock.arrow.circlepath")
+                            .font(.system(size: 26, weight: .bold))
+                            .foregroundColor(Color("startBtnColor"))
+                    }
+                    .fullScreenCover(isPresented: $showHistoryView) {
+                        HistoryView(store: .shared)
                     }
                     .padding(.vertical)
                     
