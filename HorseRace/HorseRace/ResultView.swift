@@ -11,32 +11,15 @@ import SpriteKit
 struct ResultView: View {
     @ObservedObject var game: GameState
     
-    typealias RankingInfo = (horseNum: Int, second: Double)
+    typealias RankingInfo = RaceRanking.Entry
     @State private var capsuleWidth: CGFloat = .zero
     @State private var circleWidth: CGFloat = .zero
     
     init(game: GameState) {
         self.game = game
-        var info: [RankingInfo] = []
-        for (i, value) in game.resultInfo.enumerated() {
-            info.append(RankingInfo(horseNum: i, second: value / 60.0))
-        }
-
-        let sorted = info.sorted { $0.second < $1.second }
-        self.rankingInfo = sorted
-
-        // ms 단위까지 동일하게 표시되는 쌍 찾기
-        var duplicates: Set<Int> = []
-        for i in 0..<sorted.count {
-            for j in (i+1)..<sorted.count {
-                if ResultView.formatTime(sorted[i].second, precise: false)
-                    == ResultView.formatTime(sorted[j].second, precise: false) {
-                    duplicates.insert(i)
-                    duplicates.insert(j)
-                }
-            }
-        }
-        self.preciseIndices = duplicates
+        let entries = RaceRanking.entries(from: game.resultInfo)
+        self.rankingInfo = entries
+        self.preciseIndices = RaceRanking.preciseIndices(of: entries)
     }
     
     private let rankingInfo: [RankingInfo]
@@ -148,7 +131,7 @@ struct ResultView: View {
 
                                     Spacer()
 
-                                    Text(ResultView.formatTime(second, precise: preciseIndices.contains(ranking)))
+                                    Text(RaceRanking.formatTime(second, precise: preciseIndices.contains(ranking)))
                                         .font(preciseIndices.contains(ranking) ? .caption : .subheadline)
                                         .bold()
                                         .multilineTextAlignment(.leading)
@@ -196,11 +179,6 @@ struct ResultView: View {
             .padding(.vertical, 38)
         }
         .ignoresSafeArea()
-    }
-    
-    // 전체 값을 먼저 반올림해야 11.996 -> "12.00s" 처럼 올림이 초 단위에 반영됨
-    private static func formatTime(_ second: Double, precise: Bool) -> String {
-        String(format: precise ? "%.3fs" : "%.2fs", second + 10)
     }
     
     struct RankingGridView<ItemView: View>: View {

@@ -19,6 +19,38 @@ enum Mode {
     case Rank
 }
 
+// 경주 기록 -> 순위/표시 문자열 변환
+enum RaceRanking {
+    typealias Entry = (horseNum: Int, second: Double)
+    
+    /// 기록이 빠른 순으로 정렬된 순위 (horseNum은 0부터 시작)
+    static func entries(from resultInfo: [Double]) -> [Entry] {
+        resultInfo.enumerated()
+            .map { Entry(horseNum: $0.offset, second: $0.element / 60.0) }
+            .sorted { $0.second < $1.second }
+    }
+    
+    /// 2자리로 표시했을 때 같은 시간이 되는 순위 인덱스 (3자리로 표시 필요)
+    static func preciseIndices(of entries: [Entry]) -> Set<Int> {
+        var duplicates: Set<Int> = []
+        for i in 0..<entries.count {
+            for j in (i+1)..<entries.count {
+                if formatTime(entries[i].second, precise: false)
+                    == formatTime(entries[j].second, precise: false) {
+                    duplicates.insert(i)
+                    duplicates.insert(j)
+                }
+            }
+        }
+        return duplicates
+    }
+    
+    // 전체 값을 먼저 반올림해야 11.996 -> "12.00s" 처럼 올림이 초 단위에 반영됨
+    static func formatTime(_ second: Double, precise: Bool) -> String {
+        String(format: precise ? "%.3fs" : "%.2fs", second + 10)
+    }
+}
+
 // 화면 간에 공유되는 게임 상태
 final class GameState: ObservableObject {
     @Published var mode: Mode = .GameStart
