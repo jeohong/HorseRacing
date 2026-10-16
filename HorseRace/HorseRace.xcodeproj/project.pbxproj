@@ -28,7 +28,6 @@
 		A389FD01295196DE0073F241 /* horse7Images.atlas in Resources */ = {isa = PBXBuildFile; fileRef = A389FD00295196DE0073F241 /* horse7Images.atlas */; };
 		A39FCEAD28C5ECE30078E19F /* GameStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39FCEAC28C5ECE30078E19F /* GameStartView.swift */; };
 		A3E0FD4228D5AC3800E48092 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3E0FD4128D5AC3800E48092 /* Launch Screen.storyboard */; };
-		A3E0FD4428D5AD3300E48092 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E0FD4328D5AD3300E48092 /* AppDelegate.swift */; };
 		B984828F28B8434F0087457C /* horse5Images.atlas in Resources */ = {isa = PBXBuildFile; fileRef = B984828928B8434F0087457C /* horse5Images.atlas */; };
 		B984829028B8434F0087457C /* horse6Images.atlas in Resources */ = {isa = PBXBuildFile; fileRef = B984828A28B8434F0087457C /* horse6Images.atlas */; };
 		B984829128B8434F0087457C /* horse3Images.atlas in Resources */ = {isa = PBXBuildFile; fileRef = B984828B28B8434F0087457C /* horse3Images.atlas */; };
@@ -85,7 +84,6 @@
 		A389FD00295196DE0073F241 /* horse7Images.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = horse7Images.atlas; sourceTree = "<group>"; };
 		A39FCEAC28C5ECE30078E19F /* GameStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStartView.swift; sourceTree = "<group>"; };
 		A3E0FD4128D5AC3800E48092 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		A3E0FD4328D5AD3300E48092 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B984828928B8434F0087457C /* horse5Images.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = horse5Images.atlas; sourceTree = "<group>"; };
 		B984828A28B8434F0087457C /* horse6Images.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = horse6Images.atlas; sourceTree = "<group>"; };
 		B984828B28B8434F0087457C /* horse3Images.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = horse3Images.atlas; sourceTree = "<group>"; };
@@ -162,7 +160,6 @@
 				3296D0AC2892BDE4001C1847 /* Assets.xcassets */,
 				3296D0AE2892BDE4001C1847 /* Preview Content */,
 				A3E0FD4128D5AC3800E48092 /* Launch Screen.storyboard */,
-				A3E0FD4328D5AD3300E48092 /* AppDelegate.swift */,
 				32AD9CC32951C2690042D445 /* Extension+KeyBoard.swift */,
 			);
 			path = HorseRace;
@@ -373,7 +370,6 @@
 				3296D0A92892BDE3001C1847 /* HorseRaceApp.swift in Sources */,
 				B9E1220328B3C5C400932AAE /* GameProcessingView.swift in Sources */,
 				21ED160D28D215810037CF17 /* ResultView.swift in Sources */,
-				A3E0FD4428D5AD3300E48092 /* AppDelegate.swift in Sources */,
 				21ED161128D216A40037CF17 /* CreditView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
