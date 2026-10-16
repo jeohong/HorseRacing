@@ -15,7 +15,7 @@ enum Sound: String, CaseIterable {
 
     var fileExtension: String {
         switch self {
-        case .horseGallop: return "m4a"
+        case .bgm, .horseGallop: return "m4a"
         default: return "wav"
         }
     }

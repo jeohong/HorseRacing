@@ -21,7 +21,7 @@
 		32E19A3828D31E70007EF964 /* startButtonSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 32E19A3528D31E70007EF964 /* startButtonSound.wav */; };
 		32E19A3928D31E70007EF964 /* negativeSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 32E19A3628D31E70007EF964 /* negativeSound.wav */; };
 		32E19A3A28D31E70007EF964 /* changeSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 32E19A3728D31E70007EF964 /* changeSound.wav */; };
-		32E19A3C28D32FB5007EF964 /* MA_JingleRepublic_TrendyJumpingYouth_Main.wav in Resources */ = {isa = PBXBuildFile; fileRef = 32E19A3B28D32FB5007EF964 /* MA_JingleRepublic_TrendyJumpingYouth_Main.wav */; };
+		32E19A3C28D32FB5007EF964 /* MA_JingleRepublic_TrendyJumpingYouth_Main.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 32E19A3B28D32FB5007EF964 /* MA_JingleRepublic_TrendyJumpingYouth_Main.m4a */; };
 		A37E248E2F72193200851216 /* horse10Images.atlas in Resources */ = {isa = PBXBuildFile; fileRef = A37E248D2F72193200851216 /* horse10Images.atlas */; };
 		A37E24902F721AEF00851216 /* horse9Images.atlas in Resources */ = {isa = PBXBuildFile; fileRef = A37E248F2F721AEF00851216 /* horse9Images.atlas */; };
 		A389FCFF295196C20073F241 /* horse8Images.atlas in Resources */ = {isa = PBXBuildFile; fileRef = A389FCFE295196C10073F241 /* horse8Images.atlas */; };
@@ -34,7 +34,7 @@
 		B984829228B8434F0087457C /* horse1Images.atlas in Resources */ = {isa = PBXBuildFile; fileRef = B984828C28B8434F0087457C /* horse1Images.atlas */; };
 		B984829328B8434F0087457C /* horse2Images.atlas in Resources */ = {isa = PBXBuildFile; fileRef = B984828D28B8434F0087457C /* horse2Images.atlas */; };
 		B984829428B8434F0087457C /* horse4Images.atlas in Resources */ = {isa = PBXBuildFile; fileRef = B984828E28B8434F0087457C /* horse4Images.atlas */; };
-		B98482F828CF6AD80087457C /* gameCountdownSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = B98482F728CF6AD80087457C /* gameCountdownSound.wav */; };
+		B98482F828CF6AD80087457C /* gameCountdownSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = B98482F728CF6AD80087457C /* gameCountdownSound.m4a */; };
 		B98482FC28CF7E160087457C /* HorseGallop.m4a in Resources */ = {isa = PBXBuildFile; fileRef = B98482FB28CF7E160087457C /* HorseGallop.m4a */; };
 		B9E1220328B3C5C400932AAE /* GameProcessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E1220228B3C5C400932AAE /* GameProcessingView.swift */; };
 		CC2F8D6428D34557003C8F3F /* EndParticles.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2F8D6328D34557003C8F3F /* EndParticles.swift */; };
@@ -77,7 +77,7 @@
 		32E19A3528D31E70007EF964 /* startButtonSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = startButtonSound.wav; sourceTree = "<group>"; };
 		32E19A3628D31E70007EF964 /* negativeSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = negativeSound.wav; sourceTree = "<group>"; };
 		32E19A3728D31E70007EF964 /* changeSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = changeSound.wav; sourceTree = "<group>"; };
-		32E19A3B28D32FB5007EF964 /* MA_JingleRepublic_TrendyJumpingYouth_Main.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = MA_JingleRepublic_TrendyJumpingYouth_Main.wav; sourceTree = "<group>"; };
+		32E19A3B28D32FB5007EF964 /* MA_JingleRepublic_TrendyJumpingYouth_Main.m4a */ = {isa = PBXFileReference; lastKnownFileType = audio.m4a; path = MA_JingleRepublic_TrendyJumpingYouth_Main.m4a; sourceTree = "<group>"; };
 		A37E248D2F72193200851216 /* horse10Images.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = horse10Images.atlas; sourceTree = "<group>"; };
 		A37E248F2F721AEF00851216 /* horse9Images.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = horse9Images.atlas; sourceTree = "<group>"; };
 		A389FCFE295196C10073F241 /* horse8Images.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = horse8Images.atlas; sourceTree = "<group>"; };
@@ -90,7 +90,7 @@
 		B984828C28B8434F0087457C /* horse1Images.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = horse1Images.atlas; sourceTree = "<group>"; };
 		B984828D28B8434F0087457C /* horse2Images.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = horse2Images.atlas; sourceTree = "<group>"; };
 		B984828E28B8434F0087457C /* horse4Images.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = horse4Images.atlas; sourceTree = "<group>"; };
-		B98482F728CF6AD80087457C /* gameCountdownSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = gameCountdownSound.wav; sourceTree = "<group>"; };
+		B98482F728CF6AD80087457C /* gameCountdownSound.m4a */ = {isa = PBXFileReference; lastKnownFileType = audio.m4a; path = gameCountdownSound.m4a; sourceTree = "<group>"; };
 		B98482FB28CF7E160087457C /* HorseGallop.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = HorseGallop.m4a; sourceTree = "<group>"; };
 		B9E1220228B3C5C400932AAE /* GameProcessingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameProcessingView.swift; sourceTree = "<group>"; };
 		CC2F8D6328D34557003C8F3F /* EndParticles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndParticles.swift; sourceTree = "<group>"; };
@@ -193,11 +193,11 @@
 		B984829528B843610087457C /* Contents */ = {
 			isa = PBXGroup;
 			children = (
-				32E19A3B28D32FB5007EF964 /* MA_JingleRepublic_TrendyJumpingYouth_Main.wav */,
+				32E19A3B28D32FB5007EF964 /* MA_JingleRepublic_TrendyJumpingYouth_Main.m4a */,
 				32E19A3728D31E70007EF964 /* changeSound.wav */,
 				32E19A3628D31E70007EF964 /* negativeSound.wav */,
 				32E19A3528D31E70007EF964 /* startButtonSound.wav */,
-				B98482F728CF6AD80087457C /* gameCountdownSound.wav */,
+				B98482F728CF6AD80087457C /* gameCountdownSound.m4a */,
 				B98482FB28CF7E160087457C /* HorseGallop.m4a */,
 				B984828C28B8434F0087457C /* horse1Images.atlas */,
 				B984828D28B8434F0087457C /* horse2Images.atlas */,
@@ -320,7 +320,7 @@
 				A389FCFF295196C20073F241 /* horse8Images.atlas in Resources */,
 				A37E24902F721AEF00851216 /* horse9Images.atlas in Resources */,
 				B98482FC28CF7E160087457C /* HorseGallop.m4a in Resources */,
-				B98482F828CF6AD80087457C /* gameCountdownSound.wav in Resources */,
+				B98482F828CF6AD80087457C /* gameCountdownSound.m4a in Resources */,
 				B984829328B8434F0087457C /* horse2Images.atlas in Resources */,
 				A37E248E2F72193200851216 /* horse10Images.atlas in Resources */,
 				B984829128B8434F0087457C /* horse3Images.atlas in Resources */,
@@ -334,7 +334,7 @@
 				A3E0FD4228D5AC3800E48092 /* Launch Screen.storyboard in Resources */,
 				B984829428B8434F0087457C /* horse4Images.atlas in Resources */,
 				B984829028B8434F0087457C /* horse6Images.atlas in Resources */,
-				32E19A3C28D32FB5007EF964 /* MA_JingleRepublic_TrendyJumpingYouth_Main.wav in Resources */,
+				32E19A3C28D32FB5007EF964 /* MA_JingleRepublic_TrendyJumpingYouth_Main.m4a in Resources */,
 				3296D0B02892BDE4001C1847 /* Preview Assets.xcassets in Resources */,
 				3296D0AD2892BDE4001C1847 /* Assets.xcassets in Resources */,
 			);

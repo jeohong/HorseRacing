@@ -91,7 +91,7 @@ class HorseRunningScene: SKScene {
     private var start = false
     private var lastUpdateTime: TimeInterval?
     
-    let gameCountdownSound = SKAction.playSoundFileNamed("gameCountdownSound", waitForCompletion: false)
+    let gameCountdownSound = SKAction.playSoundFileNamed("gameCountdownSound.m4a", waitForCompletion: false)
     
     override init(size: CGSize) {
         super.init(size: size)
