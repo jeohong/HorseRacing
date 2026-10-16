@@ -11,6 +11,7 @@ struct GameStartView: View {
     @ObservedObject var game: GameState
     
     @State private var showCreditView = false
+    @State private var isStarting = false
     @FocusState private var focusedHorse: Int?
     
     var body: some View {
@@ -113,12 +114,7 @@ struct GameStartView: View {
                 
                 Button {
                     SoundSetting.shared.play(.startButton)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        withAnimation(.easeInOut(duration: 0.3)) {
-                            game.startRace()
-                        }
-                    }
-                    
+                    isStarting = true
                 } label: {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(width: 92, height: 37, alignment: .center)
@@ -130,6 +126,16 @@ struct GameStartView: View {
                         )
                         .padding()
                 }
+                // 연타로 경주가 여러 번 시작되지 않도록
+                .disabled(isStarting)
+            }
+        }
+        // 버튼 효과음 후 0.5초 뒤 시작, 화면이 사라지면 자동으로 취소됨
+        .task(id: isStarting) {
+            guard isStarting else { return }
+            guard (try? await Task.sleep(seconds: 0.5)) != nil else { return }
+            withAnimation(.easeInOut(duration: 0.3)) {
+                game.startRace()
             }
         }
         .onTapGesture {

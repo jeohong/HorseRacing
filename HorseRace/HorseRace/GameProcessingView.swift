@@ -34,24 +34,24 @@ struct GameProcessingView: View {
                 startMessage
             }
         }
-        .onAppear() {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                SoundSetting.shared.play(.horseGallop)
-            }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 11) {
-                game.finishFirstRound()
-            }
-        }
-        // 1초마다 카운트다운, 화면이 사라지면 자동으로 취소됨
+        // 1라운드 진행 타임라인, 화면이 사라지면 자동으로 취소됨
         .task {
-            while count >= 0 {
-                do {
-                    try await Task.sleep(nanoseconds: 1_000_000_000)
-                } catch {
-                    return
+            do {
+                // 3 -> 2 -> 1 -> Start!
+                for _ in 0..<3 {
+                    try await Task.sleep(seconds: 1)
+                    countDown()
                 }
-                countDown()
+                // Start! 와 동시에 말 출발 (Scene도 3초 후 출발)
+                SoundSetting.shared.play(.horseGallop)
+                
+                try await Task.sleep(seconds: 1)
+                countDown() // Start! 문구 숨김
+                
+                try await Task.sleep(seconds: 7)
+                game.finishFirstRound()
+            } catch {
+                // 취소됨
             }
         }
     }
@@ -133,6 +133,12 @@ class HorseRunningScene: SKScene, ObservableObject {
         
         // 처음 시작 카운트다운 사운드 재생
         run(gameCountdownSound)
+        
+        // 3초 이후 배경 및 horse 이동
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: 3.0),
+            SKAction.run { [weak self] in self?.start = true }
+        ]))
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -182,10 +188,6 @@ class HorseRunningScene: SKScene, ObservableObject {
             horseNode.size = CGSize(width: 188, height: 106)
             addChild(horseNode)
             
-            // 3초 이후 배경 및 horse 이동
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                self.start = true
-            }
             animateHorse(number: number, speed: horseSpeed)
         }
     }
