@@ -25,6 +25,7 @@ struct FinalGameProcessingView: View {
         }
         // 화면이 사라지면 자동으로 취소됨
         .task {
+            Haptic.medium.play()
             SoundSetting.shared.play(.horseGallop)
             let isFinished = (try? await Task.sleep(seconds: 2.5)) != nil
             SoundSetting.shared.stop(.horseGallop)

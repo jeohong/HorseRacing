@@ -161,6 +161,7 @@ struct ResultView: View {
                 
                 HStack(spacing: 12) {
                     Button {
+                        Haptic.light.play()
                         shareResult()
                     } label: {
                         buttonLabel("공유하기")
@@ -171,6 +172,7 @@ struct ResultView: View {
                     Button {
                         withAnimation(.spring()) {
                             SoundSetting.shared.play(.startButton)
+                            Haptic.light.play()
                             game.restart()
                         }
                     } label: {
@@ -186,6 +188,9 @@ struct ResultView: View {
             .padding(.vertical, 38)
         }
         .ignoresSafeArea()
+        .onAppear {
+            Haptic.success.play()
+        }
     }
 
     private func buttonLabel(_ title: String) -> some View {

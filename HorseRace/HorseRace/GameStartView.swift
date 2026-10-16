@@ -43,8 +43,10 @@ struct GameStartView: View {
                     Button {
                         if game.decreaseHorseCount() {
                             SoundSetting.shared.play(.change)
+                            Haptic.light.play()
                         } else {
                             SoundSetting.shared.play(.negative)
+                            Haptic.warning.play()
                         }
                     } label: {
                         Circle()
@@ -67,8 +69,10 @@ struct GameStartView: View {
                     Button {
                         if game.increaseHorseCount() {
                             SoundSetting.shared.play(.change)
+                            Haptic.light.play()
                         } else {
                             SoundSetting.shared.play(.negative)
+                            Haptic.warning.play()
                         }
                     } label: {
                         Circle()
@@ -119,6 +123,7 @@ struct GameStartView: View {
                     
                     Button {
                         SoundSetting.shared.play(.startButton)
+                        Haptic.light.play()
                         isStarting = true
                     } label: {
                         RoundedRectangle(cornerRadius: 10)
@@ -167,6 +172,7 @@ struct GameStartView: View {
                 let isSelected = game.penaltyTarget == target
                 Button {
                     SoundSetting.shared.play(.change)
+                    Haptic.light.play()
                     game.penaltyTarget = target
                 } label: {
                     Text(target.title)

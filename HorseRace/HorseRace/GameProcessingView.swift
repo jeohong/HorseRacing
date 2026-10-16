@@ -38,9 +38,12 @@ struct GameProcessingView: View {
         .task {
             do {
                 // 3 -> 2 -> 1 -> Start!
+                Haptic.light.play()
                 for _ in 0..<3 {
                     try await Task.sleep(seconds: 1)
                     countDown()
+                    // 2, 1은 가볍게, Start!는 강하게
+                    (count > 0 ? Haptic.light : Haptic.heavy).play()
                 }
                 // Start! 와 동시에 말 출발 (Scene도 3초 후 출발)
                 SoundSetting.shared.play(.horseGallop)
