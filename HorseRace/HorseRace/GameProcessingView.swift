@@ -89,28 +89,21 @@ class HorseRunningScene: SKScene, ObservableObject {
     let backgroundStart = SKSpriteNode(imageNamed: "backgroundStart")
     let backgroundMiddle = SKSpriteNode(imageNamed: "backgroundMiddle")
     
-    var horseCount: Int = Int.random(in: 2...6)  // 말 마리 수 받아오기
-    
-    private var horseArray: [SKSpriteNode?] = []
-    private var horseRunningFrames: [SKTexture] = []
+    private let horseCount: Int
+    private var horseArray: [SKSpriteNode] = []
     
     private var start = false
     private var lastUpdateTime: TimeInterval?
     
     let gameCountdownSound = SKAction.playSoundFileNamed("gameCountdownSound.m4a", waitForCompletion: false)
     
-    override init(size: CGSize) {
+    init(size: CGSize, horseCount: Int) {
+        self.horseCount = horseCount
         super.init(size: size)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // 말 마리 수를 받아 올 수 있는 initializer
-    convenience init(size: CGSize, horseCount: Int) {
-        self.init(size: size)
-        self.horseCount = horseCount
     }
     
     override func didMove(to view: SKView) {
@@ -127,8 +120,11 @@ class HorseRunningScene: SKScene, ObservableObject {
         backgroundMiddle.size.height = frame.height
         addChild(backgroundMiddle)
         
+        // 다리 애니메이션은 출발(3초) 직후부터
         for i in 1...horseCount {
-            buildHorse(number: i)
+            let horseNode = HorseNode.make(number: i, horseCount: horseCount, x: frame.minX + 150, runDelay: 3.1)
+            horseArray.append(horseNode)
+            addChild(horseNode)
         }
         
         // 처음 시작 카운트다운 사운드 재생
@@ -160,54 +156,8 @@ class HorseRunningScene: SKScene, ObservableObject {
             }
             // 말의 움직임 속도 (x축 이동)
             for horse in horseArray {
-                horse?.position.x += CGFloat.random(in: -3...6) * frameScale
+                horse.position.x += CGFloat.random(in: -3...6) * frameScale
             }
-        }
-    }
-    
-    // horse Atlas를 생성
-    func buildHorse(number: Int) {
-        let horseAnimatedAtlas = SKTextureAtlas(named: "horse\(number)Images")
-        var runFrames: [SKTexture] = []
-        
-        let horseSpeed: Double = 40
-        let numImages = horseAnimatedAtlas.textureNames.count
-        
-        for i in 1...numImages {
-            let horseTextureName = "horse\(number)-\(i)"
-            runFrames.append(horseAnimatedAtlas.textureNamed(horseTextureName))
-        }
-        horseRunningFrames = runFrames
-        
-        let firstFrameTexture = horseRunningFrames[Int.random(in: 3...5)]
-        horseArray.append(SKSpriteNode(texture: firstFrameTexture))
-        
-        if let horseNode = horseArray[number-1] {
-            horseNode.position = CGPoint(x: frame.minX + 150, y: UIScreen.main.bounds.height / CGFloat((horseCount) + 3) * CGFloat(number))
-            horseNode.zPosition = -CGFloat(number)  // 위에 있는 말이 뒤로 가도록 zPosition 지정 필요
-            horseNode.size = CGSize(width: 188, height: 106)
-            addChild(horseNode)
-            
-            animateHorse(number: number, speed: horseSpeed)
-        }
-    }
-    
-    // horse 다리 애니메이션 동작, speed는 말의 다리 움직임 속도(
-    func animateHorse(number: Int, speed: Double) {
-        let timePerFrame = 1 / speed
-        
-        // 3초간 대기하는 Action
-        let waiting = SKAction.wait(forDuration: 3.1)
-        
-        // 달리는 Action
-        let runningAction = SKAction.repeatForever(SKAction.animate(with: horseRunningFrames,timePerFrame: timePerFrame)
-        )
-        
-        // 앞의 두 Action을 순서대로 수행
-        if let horseNode = horseArray[number-1] {
-            horseNode.run(SKAction.sequence([waiting, runningAction]),
-                          withKey: "horse\(number)Running"
-            )
         }
     }
 }

@@ -31,37 +31,6 @@ struct ResultView: View {
         (rankingInfo.count < 4) ? 1 : 2
     }
     
-    private func isUnderLineDisabled(_ num: Int) -> Bool {
-        let num = num + 1
-        let count = rankingInfo.count
-        if count < 4 {
-            return num == count
-        } else {
-            let leftCount = (count + 1) / 2
-            return num == leftCount || num == count
-        }
-    }
-    
-    private func isDashboardDisabled(_ num: Int) -> Bool {
-        let num = num + 1
-        let count = rankingInfo.count
-        if count < 4 {
-            return num == 1
-        } else {
-            let leftCount = (count + 1) / 2
-            return num == 1 || num == leftCount + 1
-        }
-    }
-    
-    private static let numberWords = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
-
-    private func numString(_ num: Int) -> String {
-        guard num >= 1, num <= Self.numberWords.count else { return "one" }
-        return Self.numberWords[num - 1]
-    }
-    
-    @State private var gridWidth: CGFloat = 0
-    
     var body: some View {
         ZStack {
             Color(hex: "EBDCCC")
