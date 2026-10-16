@@ -12,6 +12,7 @@
 		3284738A28B4C15100BF498D /* FinalGameProcessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3284738928B4C15100BF498D /* FinalGameProcessingView.swift */; };
 		3296D0A92892BDE3001C1847 /* HorseRaceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3296D0A82892BDE3001C1847 /* HorseRaceApp.swift */; };
 		3296D0AB2892BDE3001C1847 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3296D0AA2892BDE3001C1847 /* ContentView.swift */; };
+		4E2A9C202F0A1B0000D3A001 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2A9C1F2F0A1B0000D3A001 /* GameState.swift */; };
 		3296D0AD2892BDE4001C1847 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3296D0AC2892BDE4001C1847 /* Assets.xcassets */; };
 		3296D0B02892BDE4001C1847 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3296D0AF2892BDE4001C1847 /* Preview Assets.xcassets */; };
 		3296D0BA2892BDE4001C1847 /* HorseRaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3296D0B92892BDE4001C1847 /* HorseRaceTests.swift */; };
@@ -66,6 +67,7 @@
 		3296D0A52892BDE3001C1847 /* HorseRace.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HorseRace.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3296D0A82892BDE3001C1847 /* HorseRaceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorseRaceApp.swift; sourceTree = "<group>"; };
 		3296D0AA2892BDE3001C1847 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		4E2A9C1F2F0A1B0000D3A001 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		3296D0AC2892BDE4001C1847 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3296D0AF2892BDE4001C1847 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3296D0B52892BDE4001C1847 /* HorseRaceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HorseRaceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -148,6 +150,7 @@
 			children = (
 				3296D0A82892BDE3001C1847 /* HorseRaceApp.swift */,
 				3296D0AA2892BDE3001C1847 /* ContentView.swift */,
+				4E2A9C1F2F0A1B0000D3A001 /* GameState.swift */,
 				21ED161028D216A40037CF17 /* CreditView.swift */,
 				A39FCEAC28C5ECE30078E19F /* GameStartView.swift */,
 				21ED160C28D215810037CF17 /* ResultView.swift */,
@@ -367,6 +370,7 @@
 				A39FCEAD28C5ECE30078E19F /* GameStartView.swift in Sources */,
 				CC585C6528D2C56C000DC4A7 /* SoundSetting.swift in Sources */,
 				3296D0AB2892BDE3001C1847 /* ContentView.swift in Sources */,
+				4E2A9C202F0A1B0000D3A001 /* GameState.swift in Sources */,
 				3296D0A92892BDE3001C1847 /* HorseRaceApp.swift in Sources */,
 				B9E1220328B3C5C400932AAE /* GameProcessingView.swift in Sources */,
 				21ED160D28D215810037CF17 /* ResultView.swift in Sources */,

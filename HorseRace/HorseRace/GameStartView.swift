@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct GameStartView: View {
-    @Binding var mode: Mode
-    @Binding var horseCount: Int
-    @Binding var horseNames: [String]
+    @ObservedObject var game: GameState
     
     @State private var showCreditView = false
     @FocusState private var focusedHorse: Int?
@@ -40,9 +38,8 @@ struct GameStartView: View {
                     Spacer()
                     
                     Button {
-                        if horseCount > GameConfig.minHorseCount {
+                        if game.decreaseHorseCount() {
                             SoundSetting.shared.play(.change)
-                            horseCount -= 1
                         } else {
                             SoundSetting.shared.play(.negative)
                         }
@@ -58,16 +55,15 @@ struct GameStartView: View {
                     }
                     .padding(.top, 25)
                     
-                    Text("\(horseCount)")
+                    Text("\(game.horseCount)")
                         .font(.system(size: 25, weight: .heavy))
                         .foregroundColor(Color("startBtnColor"))
                         .padding([.leading, .trailing], 10)
                         .padding(.top, 25)
                     
                     Button {
-                        if horseCount < GameConfig.maxHorseCount {
+                        if game.increaseHorseCount() {
                             SoundSetting.shared.play(.change)
-                            horseCount += 1
                         } else {
                             SoundSetting.shared.play(.negative)
                         }
@@ -92,15 +88,15 @@ struct GameStartView: View {
                 Spacer()
                 
                 HStack(spacing: 0) {
-                    ForEach(1...horseCount, id:\.self) { num in
+                    ForEach(1...game.horseCount, id:\.self) { num in
                         VStack {
                             Image("horse\(num)").resizable()
                                 .frame(maxHeight: 200, alignment: .center)
                                 .scaledToFit()
                             
-                            TextField("", text: $horseNames[num - 1])
+                            TextField("", text: $game.horseNames[num - 1])
                                 .focused($focusedHorse, equals: num)
-                                .placeholder(when: horseNames[num - 1].isEmpty && focusedHorse != num) {
+                                .placeholder(when: game.horseNames[num - 1].isEmpty && focusedHorse != num) {
                                     Text("\(num)번마")
                                         .foregroundColor(.white)
                                 }
@@ -119,7 +115,7 @@ struct GameStartView: View {
                     SoundSetting.shared.play(.startButton)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         withAnimation(.easeInOut(duration: 0.3)) {
-                            mode = .FirstGame
+                            game.startRace()
                         }
                     }
                     

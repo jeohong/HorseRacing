@@ -9,20 +9,18 @@ import SwiftUI
 import SpriteKit
 
 struct FinalGameProcessingView: View {
-    @Binding var mode: Mode
-    @Binding var horseCount: Int
-    @Binding var resultInfo: [Double]
+    @ObservedObject var game: GameState
     
     var body: some View {
         ZStack {
-            SpriteView(scene: FinalHorseRunningScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), horseCount: horseCount, randomSecond: resultInfo))
+            SpriteView(scene: FinalHorseRunningScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), horseCount: game.horseCount, randomSecond: game.resultInfo))
                 .ignoresSafeArea()
         }
         .onAppear {
             SoundSetting.shared.play(.horseGallop)
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                 SoundSetting.shared.stop(.horseGallop)
-                mode = .Rank
+                game.finishRace()
             }
         }
     }

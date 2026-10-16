@@ -9,23 +9,16 @@ import SwiftUI
 import SpriteKit
 
 struct ResultView: View {
-    @Binding var mode: Mode
-    @Binding var resultInfo: [Double]
-    @Binding var horseNames: [String]
+    @ObservedObject var game: GameState
     
     typealias RankingInfo = (horseNum: Int, second: Double)
     @State private var capsuleWidth: CGFloat = .zero
     @State private var circleWidth: CGFloat = .zero
     
-    init(mode: Binding<Mode>, resultInfo: Binding<[Double]>, horseNames: Binding<[String]>) {
-        self._mode = mode
-        self._resultInfo = resultInfo
-        self._horseNames = horseNames
-        let rowCount = (resultInfo.count + 1) / 2
-        self.rows = Array<GridItem>(repeating: GridItem(.flexible(), spacing: 8, alignment: .leading),
-                                    count: rowCount)
+    init(game: GameState) {
+        self.game = game
         var info: [RankingInfo] = []
-        for (i, value) in resultInfo.wrappedValue.enumerated() {
+        for (i, value) in game.resultInfo.enumerated() {
             info.append(RankingInfo(horseNum: i, second: value / 60.0))
         }
 
@@ -48,7 +41,6 @@ struct ResultView: View {
     
     private let rankingInfo: [RankingInfo]
     private let preciseIndices: Set<Int>
-    private var rows: [GridItem]
     
     private var columnCount: Int {
         (rankingInfo.count < 4) ? 1 : 2
@@ -148,7 +140,7 @@ struct ResultView: View {
                                 Spacer()
 
                                 HStack(spacing: 0) {
-                                    Text(horseNames[num] == "" ? "\(num + 1)번마" : "\(horseNames[num])")
+                                    Text(game.displayName(of: num))
                                         .bold()
                                         .lineLimit(1)
                                         .minimumScaleFactor(0.6)
@@ -184,7 +176,7 @@ struct ResultView: View {
                 Button {
                     withAnimation(.spring()) {
                         SoundSetting.shared.play(.startButton)
-                        mode = .GameStart
+                        game.restart()
                     }
                 } label: {
                     Text("다시하기")

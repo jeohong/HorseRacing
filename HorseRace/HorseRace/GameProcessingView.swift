@@ -9,8 +9,7 @@ import SwiftUI
 import SpriteKit
 
 struct GameProcessingView: View {
-    @Binding var mode: Mode
-    @Binding var horseCount: Int
+    @ObservedObject var game: GameState
     
     @State private var count = 3 // countDown 숫자
     @State private var animationAmount = -90.0
@@ -19,7 +18,7 @@ struct GameProcessingView: View {
         
         ZStack {
             // 말 마리수 반영해서 Scene 생성
-            SpriteView(scene: HorseRunningScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), horseCount: horseCount))
+            SpriteView(scene: HorseRunningScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), horseCount: game.horseCount))
                 .ignoresSafeArea()
             
             if count > 0 {
@@ -34,7 +33,7 @@ struct GameProcessingView: View {
             }
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 11) {
-                mode = .LastGame
+                game.finishFirstRound()
             }
         }
         // 1초마다 카운트다운, 화면이 사라지면 자동으로 취소됨
