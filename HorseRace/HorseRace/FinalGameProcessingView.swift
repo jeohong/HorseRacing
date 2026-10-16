@@ -13,17 +13,15 @@ struct FinalGameProcessingView: View {
     @Binding var horseCount: Int
     @Binding var resultInfo: [Double]
     
-    let horseSoundSetting = SoundSetting(forResouce: "HorseGallop", withExtension: "m4a")
-    
     var body: some View {
         ZStack {
             SpriteView(scene: FinalHorseRunningScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), horseCount: horseCount, randomSecond: resultInfo))
                 .ignoresSafeArea()
         }
         .onAppear {
-            horseSoundSetting.playSound()
+            SoundSetting.shared.play(.horseGallop)
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                horseSoundSetting.player?.stop()
+                SoundSetting.shared.stop(.horseGallop)
                 mode = .Rank
             }
         }
@@ -36,6 +34,7 @@ class FinalHorseRunningScene: SKScene {
     private var horseArray: [SKSpriteNode?] = []
     var randomSecond: [Double] = []
     var getResult: () -> Void = {}
+    private var lastUpdateTime: TimeInterval?
     
     private var horseRunningFrames: [SKTexture] = []
     var horseCount: Int = Int.random(in: 2...6)  // 말 마리 수 받아오기
@@ -69,9 +68,14 @@ class FinalHorseRunningScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
+        defer { lastUpdateTime = currentTime }
+        guard let lastUpdateTime = lastUpdateTime else { return }
+        // 60fps 기준 1프레임 = 1.0 (120Hz 기기에서도 같은 속도로 이동)
+        let frameScale = CGFloat(min(currentTime - lastUpdateTime, 0.1)) * 60
+        
         // 60에서 180사이
         for (i, horse) in horseArray.enumerated() {
-            horse?.position.x += CGFloat(UIScreen.main.bounds.size.width / CGFloat(randomSecond[i]))
+            horse?.position.x += CGFloat(UIScreen.main.bounds.size.width / CGFloat(randomSecond[i])) * frameScale
         }
     }
     

@@ -11,8 +11,6 @@ struct ContentView: View {
     @State var resultInfo: [Double] = []
     @State var horseNames = Array(repeating: "", count: GameConfig.maxHorseCount)
     
-    let BGM = SoundSetting(forResouce: "MA_JingleRepublic_TrendyJumpingYouth_Main", withExtension: "wav")
-    
     var body: some View {
         ZStack {
             switch mode {
@@ -27,7 +25,7 @@ struct ContentView: View {
             }
         }
         .onAppear{
-            BGM.playSound()
+            SoundSetting.shared.play(.bgm)
         }
         .onChange(of: mode) { newValue in
             if newValue == .GameStart || newValue == .FirstGame {

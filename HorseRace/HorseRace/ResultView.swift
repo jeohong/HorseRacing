@@ -9,8 +9,6 @@ import SwiftUI
 import SpriteKit
 
 struct ResultView: View {
-    let restartButtonSound = SoundSetting(forResouce: "startButtonSound", withExtension: "wav")
-    
     @Binding var mode: Mode
     @Binding var resultInfo: [Double]
     @Binding var horseNames: [String]
@@ -185,7 +183,7 @@ struct ResultView: View {
                 
                 Button {
                     withAnimation(.spring()) {
-                        restartButtonSound.playSound()
+                        SoundSetting.shared.play(.startButton)
                         mode = .GameStart
                     }
                 } label: {
@@ -208,16 +206,9 @@ struct ResultView: View {
         .ignoresSafeArea()
     }
     
+    // 전체 값을 먼저 반올림해야 11.996 -> "12.00s" 처럼 올림이 초 단위에 반영됨
     private static func formatTime(_ second: Double, precise: Bool) -> String {
-        let value = second + 10
-        let sec = Int(value)
-        let millisecond = value - Double(sec)
-        if precise {
-            let raw = String(format: "%.3f", millisecond).dropFirst(2)
-            return String(sec) + "s " + String(raw) + "ms"
-        } else {
-            return String(sec) + "s " + String(format: "%.2f", millisecond).dropFirst(2) + "ms"
-        }
+        String(format: precise ? "%.3fs" : "%.2fs", second + 10)
     }
     
     struct RankingGridView<ItemView: View>: View {

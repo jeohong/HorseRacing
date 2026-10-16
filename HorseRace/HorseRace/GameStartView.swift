@@ -12,10 +12,6 @@ struct GameStartView: View {
     @Binding var horseCount: Int
     @Binding var horseNames: [String]
     
-    let startButtonSound = SoundSetting(forResouce: "startButtonSound", withExtension: "wav")
-    let changeButtonSound = SoundSetting(forResouce: "changeSound", withExtension: "wav")
-    let negativeSound = SoundSetting(forResouce: "negativeSound", withExtension: "wav")
-    
     @State private var showCreditView = false
     @FocusState private var focusedHorse: Int?
     
@@ -45,10 +41,10 @@ struct GameStartView: View {
                     
                     Button {
                         if horseCount > GameConfig.minHorseCount {
-                            changeButtonSound.playSound()
+                            SoundSetting.shared.play(.change)
                             horseCount -= 1
                         } else {
-                            negativeSound.playSound()
+                            SoundSetting.shared.play(.negative)
                         }
                     } label: {
                         Circle()
@@ -70,10 +66,10 @@ struct GameStartView: View {
                     
                     Button {
                         if horseCount < GameConfig.maxHorseCount {
-                            changeButtonSound.playSound()
+                            SoundSetting.shared.play(.change)
                             horseCount += 1
                         } else {
-                            negativeSound.playSound()
+                            SoundSetting.shared.play(.negative)
                         }
                     } label: {
                         Circle()
@@ -120,7 +116,7 @@ struct GameStartView: View {
                     .foregroundColor(Color("startBtnColor"))
                 
                 Button {
-                    startButtonSound.playSound()
+                    SoundSetting.shared.play(.startButton)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         withAnimation(.easeInOut(duration: 0.3)) {
                             mode = .FirstGame

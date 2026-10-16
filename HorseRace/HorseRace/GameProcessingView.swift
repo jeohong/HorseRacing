@@ -15,10 +15,6 @@ struct GameProcessingView: View {
     @State private var count = 3 // countDown 숫자
     @State private var animationAmount = -90.0
     
-    let horseSoundSetting = SoundSetting(forResouce: "HorseGallop", withExtension: "m4a")
-    
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    
     var body: some View {
         
         ZStack {
@@ -34,11 +30,22 @@ struct GameProcessingView: View {
         }
         .onAppear() {
             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                horseSoundSetting.playSound()
+                SoundSetting.shared.play(.horseGallop)
             }
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 11) {
                 mode = .LastGame
+            }
+        }
+        // 1초마다 카운트다운, 화면이 사라지면 자동으로 취소됨
+        .task {
+            while count >= 0 {
+                do {
+                    try await Task.sleep(nanoseconds: 1_000_000_000)
+                } catch {
+                    return
+                }
+                countDown()
             }
         }
     }
@@ -53,29 +60,19 @@ struct GameProcessingView: View {
                     animationAmount += 90
                 }
             }
-            .onReceive(timer) { time in
-                countDown()
-            }
     }
     
     private var startMessage: some View {
         Text("Start!")
             .font(.custom("Copperplate", size: 80))
             .foregroundColor(.white)
-            .onReceive(timer) { time in
-                countDown()
-            }
     }
     
     private func countDown() {
         animationAmount = -90
-        if count < 0 {
-            timer.upstream.connect().cancel()
-        } else {
-            withAnimation {
-                count -= 1
-                animationAmount += 90
-            }
+        withAnimation {
+            count -= 1
+            animationAmount += 90
         }
     }
 }
@@ -92,6 +89,7 @@ class HorseRunningScene: SKScene {
     private var horseRunningFrames: [SKTexture] = []
     
     private var start = false
+    private var lastUpdateTime: TimeInterval?
     
     let gameCountdownSound = SKAction.playSoundFileNamed("gameCountdownSound", waitForCompletion: false)
     
@@ -132,7 +130,12 @@ class HorseRunningScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        let backgroundSpeed: CGFloat = 20
+        defer { lastUpdateTime = currentTime }
+        guard let lastUpdateTime = lastUpdateTime else { return }
+        // 60fps 기준 1프레임 = 1.0 (120Hz 기기에서도 같은 속도로 이동)
+        let frameScale = CGFloat(min(currentTime - lastUpdateTime, 0.1)) * 60
+        
+        let backgroundSpeed: CGFloat = 20 * frameScale
         
         if start {
             backgroundStart.position.x -= backgroundSpeed
@@ -145,7 +148,7 @@ class HorseRunningScene: SKScene {
             }
             // 말의 움직임 속도 (x축 이동)
             for horse in horseArray {
-                horse?.position.x += CGFloat.random(in: -3...6)
+                horse?.position.x += CGFloat.random(in: -3...6) * frameScale
             }
         }
     }
