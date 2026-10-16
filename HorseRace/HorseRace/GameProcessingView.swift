@@ -92,6 +92,10 @@ class HorseRunningScene: SKScene, ObservableObject {
     private let horseCount: Int
     private var horseArray: [SKSpriteNode] = []
     
+    private let horseStartX: CGFloat = 150
+    // 1라운드가 끝날 때(11초) 말들이 화면 오른쪽 끝에 도착하도록 설계된 기준 화면 너비
+    private let baseScreenWidth: CGFloat = 844
+    
     private var start = false
     private var lastUpdateTime: TimeInterval?
     
@@ -122,7 +126,7 @@ class HorseRunningScene: SKScene, ObservableObject {
         
         // 다리 애니메이션은 출발(3초) 직후부터
         for i in 1...horseCount {
-            let horseNode = HorseNode.make(number: i, horseCount: horseCount, x: frame.minX + 150, runDelay: 3.1)
+            let horseNode = HorseNode.make(number: i, horseCount: horseCount, x: frame.minX + horseStartX, runDelay: 3.1)
             horseArray.append(horseNode)
             addChild(horseNode)
         }
@@ -155,8 +159,10 @@ class HorseRunningScene: SKScene, ObservableObject {
                 backgroundMiddle.position.x += backgroundMiddle.size.width
             }
             // 말의 움직임 속도 (x축 이동)
+            // 기준 화면에서는 기존과 같은 random(-3...6), 앞으로 가는 평균 속도만 화면 너비에 비례
+            let forwardScale = (size.width - horseStartX) / (baseScreenWidth - horseStartX)
             for horse in horseArray {
-                horse.position.x += CGFloat.random(in: -3...6) * frameScale
+                horse.position.x += (1.5 * forwardScale + CGFloat.random(in: -4.5...4.5)) * frameScale
             }
         }
     }
