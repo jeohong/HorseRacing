@@ -11,6 +11,7 @@ struct GameStartView: View {
     @ObservedObject var game: GameState
     
     @State private var showCreditView = false
+    @State private var showSettingView = false
     @State private var isStarting = false
     @FocusState private var focusedHorse: Int?
     @FocusState private var isPenaltyFocused: Bool
@@ -36,7 +37,18 @@ struct GameStartView: View {
                     .fullScreenCover(isPresented: $showCreditView) {
                         CreditView()
                     }
-                    .padding()
+                    .padding([.vertical, .leading])
+                    
+                    Button {
+                        SoundSetting.shared.play(.change)
+                        Haptic.light.play()
+                        showSettingView = true
+                    } label: {
+                        Image(systemName: "gearshape.fill")
+                            .font(.system(size: 26))
+                            .foregroundColor(Color("startBtnColor"))
+                    }
+                    .padding(.vertical)
                     
                     Spacer()
                     
@@ -143,6 +155,10 @@ struct GameStartView: View {
             // 벌칙 입력칸은 화면 아래쪽이라 입력 중에는 키보드 높이만큼 올림
             .offset(y: isPenaltyFocused ? -keyboardHeight : 0)
             .animation(.easeOut(duration: 0.25), value: isPenaltyFocused)
+            
+            if showSettingView {
+                SettingView(isPresented: $showSettingView)
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillChangeFrameNotification)) { notification in
             guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }

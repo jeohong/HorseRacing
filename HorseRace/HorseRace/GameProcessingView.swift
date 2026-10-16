@@ -135,7 +135,9 @@ class HorseRunningScene: SKScene, ObservableObject {
         }
         
         // 처음 시작 카운트다운 사운드 재생
-        run(gameCountdownSound)
+        if AppSetting.isEffectSoundOn {
+            run(gameCountdownSound)
+        }
         
         // 3초 이후 배경 및 horse 이동
         run(SKAction.sequence([

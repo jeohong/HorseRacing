@@ -221,3 +221,46 @@ final class PenaltyTargetTests: XCTestCase {
         XCTAssertEqual(PenaltyTarget.first.rankIndex(horseCount: 10), 0)
     }
 }
+
+// MARK: - AppSetting
+
+final class AppSettingTests: XCTestCase {
+    
+    private let keys = [AppSetting.bgmKey, AppSetting.effectSoundKey, AppSetting.hapticKey]
+    private var savedValues: [String: Any] = [:]
+    
+    override func setUp() {
+        super.setUp()
+        // 시뮬레이터에 저장된 실제 설정 값을 보관했다가 테스트 후 복원
+        for key in keys {
+            savedValues[key] = UserDefaults.standard.object(forKey: key)
+            UserDefaults.standard.removeObject(forKey: key)
+        }
+    }
+    
+    override func tearDown() {
+        for key in keys {
+            UserDefaults.standard.set(savedValues[key], forKey: key)
+        }
+        super.tearDown()
+    }
+    
+    func test_저장된_값이_없으면_모두_켜짐() {
+        XCTAssertTrue(AppSetting.isBGMOn)
+        XCTAssertTrue(AppSetting.isEffectSoundOn)
+        XCTAssertTrue(AppSetting.isHapticOn)
+    }
+    
+    func test_배경음악과_효과음은_각각_설정을_따름() {
+        UserDefaults.standard.set(false, forKey: AppSetting.bgmKey)
+        
+        XCTAssertFalse(Sound.bgm.isEnabled)
+        XCTAssertTrue(Sound.startButton.isEnabled)
+        
+        UserDefaults.standard.set(true, forKey: AppSetting.bgmKey)
+        UserDefaults.standard.set(false, forKey: AppSetting.effectSoundKey)
+        
+        XCTAssertTrue(Sound.bgm.isEnabled)
+        XCTAssertFalse(Sound.horseGallop.isEnabled)
+    }
+}

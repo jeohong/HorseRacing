@@ -21,6 +21,7 @@ enum Haptic {
     private static let notificationGenerator = UINotificationFeedbackGenerator()
 
     func play() {
+        guard AppSetting.isHapticOn else { return }
         switch self {
         case .light: Self.lightGenerator.impactOccurred()
         case .medium: Self.mediumGenerator.impactOccurred()
