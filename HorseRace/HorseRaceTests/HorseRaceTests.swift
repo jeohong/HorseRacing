@@ -85,7 +85,7 @@ final class GameStateTests: XCTestCase {
     }
 
     func test_초기상태() {
-        XCTAssertEqual(game.mode, .GameStart)
+        XCTAssertEqual(game.mode, .gameStart)
         XCTAssertEqual(game.horseCount, GameConfig.minHorseCount)
         XCTAssertEqual(game.horseNames.count, GameConfig.maxHorseCount)
         XCTAssertTrue(game.resultInfo.isEmpty)
@@ -135,7 +135,7 @@ final class GameStateTests: XCTestCase {
 
         game.startRace()
 
-        XCTAssertEqual(game.mode, .FirstGame)
+        XCTAssertEqual(game.mode, .firstGame)
         XCTAssertEqual(game.resultInfo.count, 4)
         XCTAssertTrue(game.resultInfo.allSatisfy { (60.0...120.0).contains($0) })
     }
@@ -156,16 +156,16 @@ final class GameStateTests: XCTestCase {
 
     func test_경주_흐름_모드_전환() {
         game.startRace()
-        XCTAssertEqual(game.mode, .FirstGame)
+        XCTAssertEqual(game.mode, .firstGame)
 
         game.finishFirstRound()
-        XCTAssertEqual(game.mode, .LastGame)
+        XCTAssertEqual(game.mode, .lastGame)
 
         game.finishRace()
-        XCTAssertEqual(game.mode, .Rank)
+        XCTAssertEqual(game.mode, .rank)
 
         game.restart()
-        XCTAssertEqual(game.mode, .GameStart)
+        XCTAssertEqual(game.mode, .gameStart)
     }
 
     func test_restart_입력한_이름은_유지() {

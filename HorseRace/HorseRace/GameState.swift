@@ -13,10 +13,10 @@ enum GameConfig {
 }
 
 enum Mode {
-    case GameStart
-    case FirstGame
-    case LastGame
-    case Rank
+    case gameStart
+    case firstGame
+    case lastGame
+    case rank
 }
 
 // 경주 기록 -> 순위/표시 문자열 변환
@@ -53,7 +53,7 @@ enum RaceRanking {
 
 // 화면 간에 공유되는 게임 상태
 final class GameState: ObservableObject {
-    @Published var mode: Mode = .GameStart
+    @Published var mode: Mode = .gameStart
     @Published private(set) var horseCount = GameConfig.minHorseCount
     @Published var horseNames = Array(repeating: "", count: GameConfig.maxHorseCount)
     // 말별 최종 라운드 기록 (값이 작을수록 빠름)
@@ -80,18 +80,18 @@ final class GameState: ObservableObject {
     // 경주 결과를 새로 뽑고 1라운드 시작
     func startRace() {
         resultInfo = (0..<horseCount).map { _ in Double.random(in: 60.0...120.0) }
-        mode = .FirstGame
+        mode = .firstGame
     }
 
     func finishFirstRound() {
-        mode = .LastGame
+        mode = .lastGame
     }
 
     func finishRace() {
-        mode = .Rank
+        mode = .rank
     }
 
     func restart() {
-        mode = .GameStart
+        mode = .gameStart
     }
 }

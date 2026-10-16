@@ -6,13 +6,13 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             switch game.mode {
-            case .GameStart:
+            case .gameStart:
                 GameStartView(game: game)
-            case .FirstGame:
+            case .firstGame:
                 GameProcessingView(game: game)
-            case .LastGame:
+            case .lastGame:
                 FinalGameProcessingView(game: game)
-            case .Rank:
+            case .rank:
                 ResultView(game: game)
             }
         }
